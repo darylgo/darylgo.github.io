@@ -6,7 +6,7 @@ categories:
 tags:
 ---
 
-> 本教程已经停更，《Camera2 教程》持续更新中。
+> 本教程已经停更，[《Camera2 教程》](https://darylgo.github.io/2019/01/22/camera2-tutorial-chapter1/)持续更新中。
 
 从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。
 
