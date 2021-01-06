@@ -1,10 +1,1319 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>学海无涯 | 吾生有岸，而知无涯。</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">学海无涯</h1><a id="logo" href="/.">学海无涯</a><p class="description">吾生有岸，而知无涯。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"><a href="/2019/01/22/camera2-tutorial-chapter1/">Android Camera2 教程 · 第一章 · 概览</a></h1><div class="post-meta">2019-01-22</div><div class="post-content"><p>从 Android 5.0 开始，Google 引入了一套全新的相机框架 Camera2（android.hardware.camera2）并且废弃了旧的相机框架 Camera1（android.hardware.Camera）。作为一个专门从事相机应用开发的开发者来说，这一刻我等了太久了，Camera1 那寥寥无几的 API 和极差的灵活性早已不能满足日益复杂的相机功能开发。Camera2 的出现给相机应用程序带来了巨大的变革，因为它的目的是为了给应用层提供更多的相机控制权限，从而构建出更高质量的相机应用程序。本文是 Camera2 教程的开篇作，本章将介绍以下几个内容：</p></div><p class="readmore"><a href="/2019/01/22/camera2-tutorial-chapter1/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a></h1><div class="post-meta">2018-11-09</div><div class="post-content"><blockquote>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"darylgo.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="学海无涯">
+<meta property="og:url" content="http://darylgo.github.io/index.html">
+<meta property="og:site_name" content="学海无涯">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Daryl">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://darylgo.github.io/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>学海无涯</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">学海无涯</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吾生有岸，而知无涯。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2019/01/22/camera2-tutorial-chapter1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/22/camera2-tutorial-chapter1/" class="post-title-link" itemprop="url">Android Camera2 教程 · 第一章 · 概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-22 10:05:19" itemprop="dateCreated datePublished" datetime="2019-01-22T10:05:19+08:00">2019-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:55:07" itemprop="dateModified" datetime="2021-01-06T21:55:07+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>从 Android 5.0 开始，Google 引入了一套全新的相机框架 Camera2（android.hardware.camera2）并且废弃了旧的相机框架 Camera1（android.hardware.Camera）。作为一个专门从事相机应用开发的开发者来说，这一刻我等了太久了，Camera1 那寥寥无几的 API 和极差的灵活性早已不能满足日益复杂的相机功能开发。Camera2 的出现给相机应用程序带来了巨大的变革，因为它的目的是为了给应用层提供更多的相机控制权限，从而构建出更高质量的相机应用程序。本文是 Camera2 教程的开篇作，本章将介绍以下几个内容：</p>
+<ul>
+<li>一些 Camera2 的重要概念</li>
+<li>一些只有 Camera2 才支持的高级特性</li>
+<li>一些从 Camera1 迁移到 Camera2 的建议</li>
+</ul>
+<blockquote>
+<p>本章涉及的代码很少，因为我们会在接下来的教程中深入介绍 Camera2 的 API。</p>
+</blockquote>
+<h1 id="1-Pipeline"><a href="#1-Pipeline" class="headerlink" title="1 Pipeline"></a>1 Pipeline</h1><p>Camera2 的 API 模型被设计成一个 Pipeline（管道），它按顺序处理每一帧的请求并返回请求结果给客户端。下面这张来自官方的图展示了 Pipeline 的工作流程，我们会通过一个简单的例子详细解释这张图。</p>
+<img src="/2019/01/22/camera2-tutorial-chapter1/pipeline.png" class="">
+
+<p>为了解释上面的示意图，假设我们想要同时拍摄两张不同尺寸的图片，并且在拍摄的过程中闪光灯必须亮起来。整个拍摄流程如下：</p>
+<ol>
+<li>创建一个用于从 Pipeline 获取图片的 CaptureRequest。</li>
+<li>修改 CaptureRequest 的闪光灯配置，让闪光灯在拍照过程中亮起来。</li>
+<li>创建两个不同尺寸的 Surface 用于接收图片数据，并且将它们添加到 CaptureRequest 中。</li>
+<li>发送配置好的 CaptureRequest 到 Pipeline 中等待它返回拍照结果。</li>
+</ol>
+<p>一个新的 CaptureRequest 会被放入一个被称作 Pending Request Queue 的队列中等待被执行，当 In-Flight Capture Queue 队列空闲的时候就会从 Pending Request Queue 获取若干个待处理的 CaptureRequest，并且根据每一个 CaptureRequest 的配置进行 Capture 操作。最后我们从不同尺寸的 Surface 中获取图片数据并且还会得到一个包含了很多与本次拍照相关的信息的 CaptureResult，流程结束。</p>
+<h1 id="2-Supported-Hardware-Level"><a href="#2-Supported-Hardware-Level" class="headerlink" title="2 Supported Hardware Level"></a>2 Supported Hardware Level</h1><p>相机功能的强大与否和硬件息息相关，不同厂商对 Camera2 的支持程度也不同，所以 Camera2 定义了一个叫做 Supported Hardware Level 的重要概念，其作用是将不同设备上的 Camera2 根据功能的支持情况划分成多个不同级别以便开发者能够大概了解当前设备上 Camera2 的支持情况。截止到 Android P 为止，从低到高一共有 LEGACY、LIMITED、FULL 和 LEVEL_3 四个级别：</p>
+<ol>
+<li><strong>LEGACY</strong>：向后兼容的级别，处于该级别的设备意味着它只支持 Camera1 的功能，不具备任何 Camera2 高级特性。</li>
+<li><strong>LIMITED</strong>：除了支持 Camera1 的基础功能之外，还支持部分 Camera2 高级特性的级别。</li>
+<li><strong>FULL</strong>：支持所有 Camera2 的高级特性。</li>
+<li><strong>LEVEL_3</strong>：新增更多 Camera2 高级特性，例如 YUV 数据的后处理等。</li>
+</ol>
+<h1 id="3-Capture"><a href="#3-Capture" class="headerlink" title="3 Capture"></a>3 Capture</h1><p>相机的所有操作和参数配置最终都是服务于图像捕获，例如对焦是为了让某一个区域的图像更加清晰，调节曝光补偿是为了调节图像的亮度。因此，在 Camera2 里面所有的相机操作和参数配置都被抽象成 Capture（捕获），所以不要简单的把 Capture 直接理解成是拍照，因为 Capture 操作可能仅仅是为了让预览画面更清晰而进行对焦而已。如果你熟悉 Camera1，那你可能会问 <code>setFlashMode()</code> 在哪？<code>setFocusMode()</code> 在哪？<code>takePicture()</code> 在哪？告诉你，它们都是通过 Capture 来实现的。</p>
+<p>Capture 从执行方式上又被细分为【单次模式】、【多次模式】和【重复模式】三种，我们来一一解释下：</p>
+<ul>
+<li><p><strong>单次模式（One-shot）</strong>：指的是只执行一次的 Capture 操作，例如设置闪光灯模式、对焦模式和拍一张照片等。多个一次性模式的 Capture 会进入队列按顺序执行。</p>
+</li>
+<li><p><strong>多次模式（Burst）</strong>：指的是连续多次执行指定的 Capture 操作，该模式和多次执行单次模式的最大区别是连续多次 Capture 期间不允许插入其他任何 Capture 操作，例如连续拍摄 100 张照片，在拍摄这 100 张照片期间任何新的 Capture 请求都会排队等待，直到拍完 100 张照片。多组多次模式的 Capture 会进入队列按顺序执行。</p>
+</li>
+<li><p><strong>重复模式（Repeating）</strong>：指的是不断重复执行指定的 Capture 操作，当有其他模式的 Capture 提交时会暂停该模式，转而执行其他被模式的 Capture，当其他模式的 Capture 执行完毕后又会自动恢复继续执行该模式的 Capture，例如显示预览画面就是不断 Capture 获取每一帧画面。该模式的 Capture 是全局唯一的，也就是新提交的重复模式 Capture 会覆盖旧的重复模式 Capture。</p>
+</li>
+</ul>
+<h1 id="4-CameraManager"><a href="#4-CameraManager" class="headerlink" title="4 CameraManager"></a>4 CameraManager</h1><p>CameraManager 是一个负责查询和建立相机连接的系统服务，它的功能不多，这里列出几个 CameraManager 的关键功能：</p>
+<ol>
+<li>将相机信息封装到 CameraCharacteristics 中，并提获取 CameraCharacteristics 实例的方式。</li>
+<li>根据指定的相机 ID 连接相机设备。</li>
+<li>提供将闪光灯设置成手电筒模式的快捷方式。</li>
+</ol>
+<h1 id="5-CameraCharacteristics"><a href="#5-CameraCharacteristics" class="headerlink" title="5 CameraCharacteristics"></a>5 CameraCharacteristics</h1><p>CameraCharacteristics 是一个只读的相机信息提供者，其内部携带大量的相机信息，包括代表相机朝向的 <code>LENS_FACING</code>；判断闪光灯是否可用的 <code>FLASH_INFO_AVAILABLE</code>；获取所有可用 AE 模式的 <code>CONTROL_AE_AVAILABLE_MODES</code> 等等。如果你对 Camera1 比较熟悉，那么 CameraCharacteristics 有点像 Camera1 的 <code>Camera.CameraInfo</code> 或者 <code>Camera.Parameters</code>。</p>
+<h1 id="6-CameraDevice"><a href="#6-CameraDevice" class="headerlink" title="6 CameraDevice"></a>6 CameraDevice</h1><p>CameraDevice 代表当前连接的相机设备，它的职责有以下四个：</p>
+<ol>
+<li>根据指定的参数创建 CameraCaptureSession。</li>
+<li>根据指定的模板创建 CaptureRequest。</li>
+<li>关闭相机设备。</li>
+<li>监听相机设备的状态，例如断开连接、开启成功和开启失败等。</li>
+</ol>
+<p>熟悉 Camera1 的人可能会说 CameraDevice 就是 Camera1 的 Camera 类，实则不是，Camera 类几乎负责了所有相机的操作，而 CameraDevice 的功能则十分的单一，就是只负责建立相机连接的事务，而更加细化的相机操作则交给了稍后会介绍的 CameraCaptureSession。</p>
+<h1 id="7-Surface"><a href="#7-Surface" class="headerlink" title="7 Surface"></a>7 Surface</h1><p>Surface 是一块用于填充图像数据的内存空间，例如你可以使用 SurfaceView 的 Surface 接收每一帧预览数据用于显示预览画面，也可以使用 ImageReader 的 Surface 接收 JPEG 或 YUV 数据。每一个 Surface 都可以有自己的尺寸和数据格式，你可以从 CameraCharacteristics 获取某一个数据格式支持的尺寸列表。</p>
+<h1 id="8-CameraCaptureSession"><a href="#8-CameraCaptureSession" class="headerlink" title="8 CameraCaptureSession"></a>8 CameraCaptureSession</h1><p>CameraCaptureSession 实际上就是配置了目标 Surface 的 Pipeline 实例，我们在使用相机功能之前必须先创建 CameraCaptureSession 实例。一个 CameraDevice 一次只能开启一个 CameraCaptureSession，绝大部分的相机操作都是通过向 CameraCaptureSession 提交一个 Capture 请求实现的，例如拍照、连拍、设置闪光灯模式、触摸对焦、显示预览画面等等。</p>
+<h1 id="9-CaptureRequest"><a href="#9-CaptureRequest" class="headerlink" title="9 CaptureRequest"></a>9 CaptureRequest</h1><p>CaptureRequest 是向 CameraCaptureSession 提交 Capture 请求时的信息载体，其内部包括了本次 Capture 的参数配置和接收图像数据的 Surface。CaptureRequest 可以配置的信息非常多，包括图像格式、图像分辨率、传感器控制、闪光灯控制、3A 控制等等，可以说绝大部分的相机参数都是通过 CaptureRequest 配置的。值得注意的是每一个 CaptureRequest 表示一帧画面的操作，这意味着你可以精确控制每一帧的 Capture 操作。</p>
+<h1 id="10-CaptureResult"><a href="#10-CaptureResult" class="headerlink" title="10 CaptureResult"></a>10 CaptureResult</h1><p>CaptureResult 是每一次 Capture 操作的结果，里面包括了很多状态信息，包括闪光灯状态、对焦状态、时间戳等等。例如你可以在拍照完成的时候，通过 CaptureResult 获取本次拍照时的对焦状态和时间戳。需要注意的是，CaptureResult 并不包含任何图像数据，前面我们在介绍 Surface 的时候说了，图像数据都是从 Surface 获取的。</p>
+<h1 id="11-一些只有-Camera2-才支持的高级特性"><a href="#11-一些只有-Camera2-才支持的高级特性" class="headerlink" title="11 一些只有 Camera2 才支持的高级特性"></a>11 一些只有 Camera2 才支持的高级特性</h1><p>如果要我给出强有力的理由解释为什么要使用 Camera2，那么通过 Camera2 提供的高级特性可以构建出更加高质量的相机应用程序应该是最佳理由了。</p>
+<ol>
+<li><p><strong>在开启相机之前检查相机信息</strong><br>出于某些原因，你可能需要先检查相机信息再决定是否开启相机，例如检查闪光灯是否可用。在 Caemra1 上，你无法在开机相机之前检查详细的相机信息，因为这些信息都是通过一个已经开启的相机实例提供的。在 Camera2 上，我们有了和相机实例完全剥离的 CameraCharacteristics 实例专门提供相机信息，所以我们可以在不开启相机的前提下检查几乎所有的相机信息。</p>
+</li>
+<li><p><strong>在不开启预览的情况下拍照</strong><br>在 Camera1 上，开启预览是一个很重要的环节，因为只有在开启预览之后才能进行拍照，因此即使显示预览画面与实际业务需求相违背的时候，你也不得不开启预览。而 Camera2 则不强制要求你必须先开启预览才能拍照。</p>
+</li>
+<li><p><strong>一次拍摄多张不同格式和尺寸的图片</strong><br>在 Camera1 上，一次只能拍摄一张图片，更不同谈多张不同格式和尺寸的图片了。而 Camera2 则支持一次拍摄多张图片，甚至是多张格式和尺寸都不同的图片。例如你可以同时拍摄一张 1440x1080 的 JPEG 图片和一张全尺寸的 RAW 图片。</p>
+</li>
+<li><p><strong>控制曝光时间</strong><br>在暗环境下拍照的时候，如果能够适当延长曝光时间，就可以让图像画面的亮度得到提高。在 Camera2 上，你可以在规定的曝光时长范围内配置拍照的曝光时间，从而实现拍摄长曝光图片，你甚至可以延长每一帧预览画面的曝光时间让整个预览画面在暗环境下也能保证一定的亮度。而在 Camera1 上你只能 YY 一下。</p>
+</li>
+<li><p><strong>连拍</strong><br>连拍 30 张图片这样的功能在 Camera2 出现之前恐怕只有系统相机才能做到了（通过 OpenGL 截取预览画面的做法除外），也可能是出于这个原因，市面上的第三方相机无一例外都不支持连拍。有了 Camera2，你完全可以让你的相机应用程序支持连拍功能，甚至是连续拍 30 张使用不同曝光时间的图片。</p>
+</li>
+<li><p><strong>灵活的 3A 控制</strong><br>3A（AF、AE、AWB）的控制在 Camera2 上得到了最大化的放权，应用层可以根据业务需求灵活配置 3A 流程并且实时获取 3A 状态，而 Camera1 在 3A 的控制和监控方面提供的接口则要少了很多。例如你可以在拍照前进行 AE 操作，并且监听本这次拍照是否点亮闪光灯。</p>
+</li>
+</ol>
+<h1 id="12-一些从-Camera1-迁移到-Camera2-的建议"><a href="#12-一些从-Camera1-迁移到-Camera2-的建议" class="headerlink" title="12 一些从 Camera1 迁移到 Camera2 的建议"></a>12 一些从 Camera1 迁移到 Camera2 的建议</h1><p>如果你熟悉 Camera1，并且打算从 Camera1 迁移到 Camera2 的话，希望以下几个建议可以对你起到帮助：</p>
+<ol>
+<li><p>Camera1 严格区分了预览和拍照两个流程，而 Camera2 则把这两个流程都抽象成了 Capture 行为，只不过一个是不断重复的 Capture，一个是一次性的 Capture 而已，所以建议你不要带着过多的 Camera1 思维使用 Camera2，避免因为思维上的束缚而无法充分利用 Camera2 灵活的 API。</p>
+</li>
+<li><p>如同 Camera1 一样，Camera2 的一些 API 调用也会耗时，所以建议你使用独立的线程执行所有的相机操作，尽量避免直接在主线程调用 Camera2 的 API，HandlerThread 是一个不错的选择。</p>
+</li>
+<li><p>Camera2 所有的相机操作都可以注册相关的回调接口，然后在不同的回调方法里写业务逻辑，这可能会让你的代码因为不够线性而错综复杂，建议你可以尝试使用子线程的阻塞方式来尽可能地保证代码的线性执行（熟悉 Dart 的人一定很喜欢它的 async 和 await 操作）。例如在子线程阻塞等待 CaptureResult，然后继续执行后续的操作，而不是将代码拆分到到 <code>CaptureCallback.onCaptureCompleted()</code> 方法里。</p>
+</li>
+<li><p>你可以认为 Camera1 是 Camera2 的一个子集，也就是说 Camera1 能做的事情 Camera2 一定能做，反过来则不一定行得通。</p>
+</li>
+<li><p>如果你的应用程序需要同时兼容 Camera1 和 Camera2，个人建议分开维护，因为 Camera1 蹩脚的 API 设计很可能让 Camera2 灵活的 API 无法得到充分的发挥，另外将两个设计上完全不兼容的东西搅和在一起带来的痛苦可能远大于其带来便利性，多写一些冗余的代码也许还更开心。</p>
+</li>
+<li><p>官方说 Camera2 的性能会更好，这句话听听就好，起码在较早期的一些机器上运行 Camera2 的性能并没有比 Camera1 好。</p>
+</li>
+<li><p>当设备的 Supported Hardware Level 低于 FULL 的时候，建议还是使用 Camera1，因为 FULL 级别以下的 Camera2 能提供的功能几乎和 Camera1 一样，所以倒不如选择更加稳定的 Camera1。</p>
+</li>
+</ol>
+<h1 id="13-结束语"><a href="#13-结束语" class="headerlink" title="13 结束语"></a>13 结束语</h1><p>本章到此结束，主要是介绍了 Camera2 的一些基础概念，让大家能够基本了解 Camera2 的工作流程和基础概念，并且知道使用 Camera2 能够做些什么。如果你对 Camera2 还是感到很陌生，不要紧，后续的教程会带领大家逐步深入了解 Camera2。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2018/11/09/camera1-tutorial-chapter2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/09/camera1-tutorial-chapter2/" class="post-title-link" itemprop="url">Android Camera1 教程 · 第二章 · 预览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-09 09:39:44" itemprop="dateCreated datePublished" datetime="2018-11-09T09:39:44+08:00">2018-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:56:00" itemprop="dateModified" datetime="2021-01-06T21:56:00+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
 <p>注意：本教程已经停更，<a href="https://darylgo.github.io/2019/01/22/camera2-tutorial-chapter1/">《Camera2 教程》</a>持续更新中。</p>
 </blockquote>
-<p>上一章<a href="https://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/">《Camera 教程 · 第一章 · 开启相机》</a> 我们介绍了如何开启相机和关闭相机，但是还没让预览画面显示出来，这一章我们就来介绍下如何让相机开启预览。</p></div><p class="readmore"><a href="/2018/11/09/camera1-tutorial-chapter2/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/08/camera1-tutorial-chapter1/">Android Camera1 教程 · 第一章 · 开启相机</a></h1><div class="post-meta">2018-11-08</div><div class="post-content"><blockquote>
+<p>上一章<a href="https://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/">《Camera 教程 · 第一章 · 开启相机》</a> 我们介绍了如何开启相机和关闭相机，但是还没让预览画面显示出来，这一章我们就来介绍下如何让相机开启预览。</p>
+<p>阅读完本章，你将会学到以下几个知识点：</p>
+<ol>
+<li>如何获取相机支持的参数</li>
+<li>如何配置预览尺寸</li>
+<li>如何配置预览的 Surface</li>
+<li>如何开启和关闭预览</li>
+<li>设备方向的概念</li>
+<li>局部坐标系的概念</li>
+<li>屏幕方向的概念</li>
+<li>摄像头传感器方向的概念</li>
+<li>如何矫正预览画面的方向</li>
+<li>如何适配预览画面的比例</li>
+<li>如何获取预览数据</li>
+<li>如何切换前后置摄像头</li>
+</ol>
+<p>你可以在 <a target="_blank" rel="noopener" href="https://github.com/darylgo/Camera1Sample">https://github.com/darylgo/Camera1Sample</a> 下载相关的源码。</p>
+<h1 id="1-认识-Parameters"><a href="#1-认识-Parameters" class="headerlink" title="1 认识 Parameters"></a>1 认识 Parameters</h1><p>相机功能的强大与否完全取决于各手机厂商的底层实现，在基于相机开发任何功能之前，你都需要通过某些手段判断当前设备相机的能力是否足以支撑你要开发的功能，而 Camera.Parameters 就是我们判断相机能力大小的手段，在 Camera.Parameters 里提供了大量形如 getSupportedXXX 的方法，通过这些方法你就可以判断相机某方面的功能是否达到你的要求，例如通过 getSupportedPreviewSizes() 可以获取相机支持的预览尺寸列表，进而从这个列表中查询是否有满足你需求的尺寸。</p>
+<p>除了通过 Camera.Parameters 判断相机功能的支持情况之外，我们还通过 Camera.Parameters 设置绝大部分相机参数，并且通过 Camera.setParameters() 方法将设置好的参数传给底层，让这些参数生效。所以相机参数的配置流程基本就是以下三个步骤：</p>
+<ol>
+<li>通过 Camera.getParameters() 获取 Camera.Parameters 实例。</li>
+<li>通过 Camera.Parameters.getSupportedXXX 获取某个参数的支持情况。</li>
+<li>通过 Camera.Parameters.set() 方法设置参数。</li>
+<li>通过 Camera.setParameters() 方法将参数应用到底层。</li>
+</ol>
+<blockquote>
+<p>注意：Camera.getParameters() 是一个比较耗时的操作，实测 20ms 到 100ms 不等，所以尽可能地一次性设置所有必要的参数，然后通过 Camera.setParameters() 一次性应用到底层。</p>
+</blockquote>
+<h1 id="2-设置预览尺寸"><a href="#2-设置预览尺寸" class="headerlink" title="2 设置预览尺寸"></a>2 设置预览尺寸</h1><p>上面我们简单介绍了 Camera.Parameters，这一节我们就要通过它来配置相机的预览尺寸。所谓的预览尺寸，指的就是相机把画面输出到手机屏幕上供用户预览的尺寸，通常来说我们希望预览尺寸在不超过手机屏幕分辨率的情况下，越大越好。另外，出于业务需求，我们的相机可能需要支持多种不同的预览比例供用户选择，例如 4:3 和 16:9 的比例。由于不同厂商对相机的实现都会有差异，所以很多参数在不同的手机上支持的情况也不一样，相机的预览尺寸也是。所以在设置相机预览尺寸之前，我们先通过 Camera.Parameters.getSupportedPreviewSizes() 获取该设备支持的所有预览尺寸：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Camera.Parameters parameters = mCamera.getParameters();</span><br><span class="line">List&lt;Camera.Size&gt; supportedPreviewSizes = parameters.getSupportedPreviewSizes();</span><br></pre></td></tr></table></figure>
+
+<p>如果我们把所有的预览尺寸都打印出来看时，会发现一个比较特别的情况，就是预览尺寸的宽是长边，高是短边，例如 1920x1080，而不是 1080x1920，这一点大家需要特别注意。</p>
+<p>在获取到预览尺寸列表之后，我们要根据自己的实际需求过滤出其中一个最符合要求的尺寸，并且把它设置给相机，在我们的 Demo 里，只有当预览尺寸的比例和大小都满足要求时才能被设置给相机，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据指定的尺寸要求设置预览尺寸，我们会同时考虑指定尺寸的比例和大小。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> shortSide 短边长度</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> longSide  长边长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setPreviewSize</span><span class="params">(<span class="keyword">int</span> shortSide, <span class="keyword">int</span> longSide)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span> &amp;&amp; shortSide != <span class="number">0</span> &amp;&amp; longSide != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> aspectRatio = (<span class="keyword">float</span>) longSide / shortSide;</span><br><span class="line">        Camera.Parameters parameters = mCamera.getParameters();</span><br><span class="line">        List&lt;Camera.Size&gt; supportedPreviewSizes = parameters.getSupportedPreviewSizes();</span><br><span class="line">        <span class="keyword">for</span> (Camera.Size previewSize : supportedPreviewSizes) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">float</span>) previewSize.width / previewSize.height == aspectRatio &amp;&amp; previewSize.height &lt;= shortSide &amp;&amp; previewSize.width &lt;= longSide) &#123;</span><br><span class="line">                parameters.setPreviewSize(previewSize.width, previewSize.height);</span><br><span class="line">                mCamera.setParameters(parameters);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-添加预览-Surface"><a href="#4-添加预览-Surface" class="headerlink" title="4 添加预览 Surface"></a>4 添加预览 Surface</h1><p>相机输出的预览画面最终都是绘制到指定的 Surface 上，这个 Surface 可以来自 SurfaceHolder 或者 SurfaceTexture，至于什么是 Surface 这里就不过多解释，大家可以自行了解。所以在开启预览之前，我们还要告诉相机把画面输出到哪个 Surface 上，Camera 支持两种方式设置预览的 Surface：</p>
+<ol>
+<li>通过 Camera.setPreviewDisplay() 方法设置 SurfaceHolder 给相机，通常是在你使用 SurfaceView 作为预览控件时会使用该方法。</li>
+<li>通过 Camera.setPreviewTexture() 方法设置 SurfaceTexture 给相机，通常是在你使用 TextureView 作为预览控件或者自己创建 SurfaceTexture 时使用该方法。</li>
+</ol>
+<p>在我们的 Demo 里，使用的 SurfaceView，所以会通过 Camera.setPreviewDisplay() 方法设置预览的 Surface，代码片段如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置预览 Surface。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setPreviewSurface</span><span class="params">(SurfaceHolder previewSurface)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span> &amp;&amp; previewSurface != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mCamera.setPreviewDisplay(previewSurface);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-开启和关闭预览"><a href="#5-开启和关闭预览" class="headerlink" title="5 开启和关闭预览"></a>5 开启和关闭预览</h1><p>接下来，我们就要正式开启相机预览了，相关的方法就下面两个：</p>
+<ul>
+<li>Camera.startPreview()：开启预览</li>
+<li>Camera.stopPreview()：关闭预览</li>
+</ul>
+<p>在 Demo 的代码中，我们做了一些逻辑处理，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 开始预览。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startPreview</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mCamera.startPreview();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;startPreview() called&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 停止预览。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stopPreview</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mCamera.stopPreview();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;stopPreview() called&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-校正预览画面方向"><a href="#6-校正预览画面方向" class="headerlink" title="6 校正预览画面方向"></a>6 校正预览画面方向</h1><p>如果没有做任何画面方向的校正，我们看到的画面很可能是横向的，这是因为手机上的摄像头传感器方向不一定是垂直的。在做预览画面方向的校正之前我们先来了解五个概念，分别是自然方向、设备方向、局部坐标系、屏幕方向和摄像头传感器方向。</p>
+<p><strong>自然方向</strong></p>
+<p>当我们谈论方向的时候，实际上都是相对于某一个 0° 方向的角度，这个 0° 方向被称作自然方向，例如人站立的时候就是自然方向，你总不会认为一个人要倒立的时候才是自然方向吧，而接下来我们要谈论的设备方向就有的自然方向的定义。</p>
+<p><strong>设备方向</strong></p>
+<p>设备方向指的是硬件设备在空间中的方向与其自然方向的顺时针夹角。这里提到的自然方向指的就是我们手持一个设备的时候最习惯的方向，比如手机我们习惯竖着拿，而平板我们则习惯横着拿，所以通常情况下手机的自然方向就是竖着的时候，平板的自然方向就是横着的时候。</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/device-orientation.png" class="">
+
+<p>以手机为例，我们可以有以下四个比较常见的设备方向：</p>
+<ul>
+<li>当我们把手机垂直放置且屏幕朝向我们的时候，设备方向为 0°，即设备自然方向</li>
+<li>当我们把手机向右横放且屏幕朝向我们的时候，设备方向为 90°</li>
+<li>当我们把手机倒着放置且屏幕朝向我们的时候，设备方向为 180°</li>
+<li>当我们把手机向左横放且屏幕朝向我们的时候，设备方向为 270°</li>
+</ul>
+<p>了解了设备方向的概念之后，我们可以通过 OrientationEventListener 监听设备的方向，进而判断设备当前是否处于自然方向，当设备的方向发生变化的时候会回调 OrientationEventListener.onOrientationChanged(int) 方法，传给我们一个 0° 到 359° 的方向值，其中 0° 就代表设备处于自然方向。</p>
+<p><strong>局部坐标系</strong></p>
+<p>所谓的局部坐标系指的是当设备处于自然方向时，相对于设备屏幕的坐标系，该坐标系是固定不变的，不会因为设备方向的变化而改变，下图是基于手机的局部坐标系示意图：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/local-coord.png" class="">
+
+<ul>
+<li>x 轴是当手机处于自然方向时，和手机屏幕平行且指向右边的坐标轴。</li>
+<li>y 轴是当手机处于自然方向时，和手机屏幕平行且指向上方的坐标轴。</li>
+<li>z 轴是当手机处于自然方向时，和手机屏幕垂直且指向屏幕外面的坐标轴。</li>
+</ul>
+<p>为了进一步解释【坐标系是固定不变的，不会因为设备方向的变化而改变】的概念，这里举个例子，当我们把手机向右横放且屏幕朝向我们的时候，此时设备方向为 90°，局部坐标系相对于手机屏幕是保持不变的，所以 y 轴正方向指向右边，x 轴正方向指向下方，z 轴正方向还是指向屏幕外面，如下图所示：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/device-orientation2.png" class="">
+
+<p><strong>屏幕方向</strong></p>
+<p>屏幕方向指的是屏幕上显示画面与局部坐标系 y 轴的顺时针夹角，注意这里实际上指的是显示的画面，而不是物理硬件上的屏幕，只是我们习惯上称作屏幕方向而已。</p>
+<p>为了更清楚的说明这个概念，我们举一个例子，假设我们将手机向右横放看电影，此时画面是朝上的，如下图所示：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/screen-orientation.png" class="">
+
+<p>从上图来看，手机向右横放会导致设备方向变成了 90°，但是屏幕方向却是 270°，因为它是相对局部坐标系 y 轴的顺时针夹角，所以跟设备方向没有任何关系。如果把图中的设备换成是平板，结果就不一样了，因为平板横放的时候就是它的设备自然方向，y 轴朝上，屏幕画面显示的方向和 y 轴的夹角是 0°，设备方向也是 0°。</p>
+<p>总结一下，设备方向和屏幕方向之间没有任何关系，设备方向是相对于其现实空间中自然方向的角度，而屏幕方向是相对局部坐标系的角度。</p>
+<p><strong>摄像头传感器方向</strong></p>
+<p>摄像头传感器方向指的是传感器采集到的画面方向经过顺时针旋转多少度之后才能和局部坐标系的 y 轴正方向一致，也就是在上一章<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3440d82545f6">《Camera 教程 · 第一章 · 开启相机》</a> 里，我们提到的 Camera.CameraInfo.orientation 属性。</p>
+<p>例如 orientation 为 90° 时，意味我们将摄像头采集到的画面顺时针旋转 90° 之后，画面的方向就和局部坐标系的 y 轴正方向一致，换个说法就是原始画面的方向和 y 轴的夹角是逆时针 90°。</p>
+<p>最后我们要考虑一个特殊情况，就是前置摄像头的画面是做了镜像处理的，也就是所谓的前置镜像操作，这个情况下， orientation 的值并不是实际我们要旋转的角度，我们需要取它的镜像值才是我们真正要旋转的角度，例如 orientation 为 270°，实际我们要旋转的角度是 90°。</p>
+<blockquote>
+<p>注意：摄像头传感器方向在不同的手机上可能不一样，大部分手机都是 90°，也有小部分是 0° 的，所以我们要通过 Camera.CameraInfo.orientation 去判断方向，而不是假设所有设备的摄像头传感器方向都是 90°。</p>
+</blockquote>
+<p><strong>画面方向校正</strong></p>
+<p>介绍完几个方向的概念之后，我们就来说下如何校正相机的预览画面。我们会举几个例子，由简到繁逐步说明预览画面校正过程中要注意的事项。</p>
+<p>首先我们要知道的是摄像头传感器方向只有 0°、90°、180°、270° 四个可选值，并且这些值是相对于局部坐标系 的 y 轴定义出来的，现在假设一个相机 APP 的画面在手机上是竖屏显示，也就是屏幕方向是 0° ，并且假设摄像头传感器的方向是 90°，如果我们没有校正画面的话，则显示的画面如下图所示（忽略画面变形）：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/preview-orientation1.png" class="">
+
+<p>很明显，上面显示的画面内容方向是错误的，里面的人物应该是垂直向上显示才对，所以我们应该吧摄像头采集到的画面顺时针旋转 90°，才能得到正确的显示结果，如下图所示：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/preview-orientation2.png" class="">
+
+<p>上面的例子是建立在我们的屏幕方向是 0° 的时候，如果我们要求屏幕方向是 90°，也就是手机向左横放的时候画面才是正的，并且假设摄像头传感器的方向还是 90°，如果我们没有校正画面的话，则显示的画面如下图所示（忽略画面变形）：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/preview-orientation3.png" class="">
+
+<p>此时，我们知道传感器的方向是 90°，如果我们将传感器采集到的画面顺时针旋转 90° 显然是无法得到正确的画面，因为它是相对于局部坐标系 y 轴的角度，而不是实际屏幕方向，所以在做画面校正的时候我们还要把实际屏幕方向也考虑进去，这里实际屏幕方向是 90°，所以我们应该把传感器采集到的画面顺时针旋转 180°（摄像头传感器方向 + 实际屏幕方向） 才能得到正确的画面，显示的画面如下图所示（忽略画面变形）：</p>
+<img src="/2018/11/09/camera1-tutorial-chapter2/preview-orientation4.png" class="">
+
+<p>总结一下，在校正画面方向的时候要同时考虑两个因素，即摄像头传感器方向和屏幕方向。接下来我们要回到我们的相机应用里，看看通过代码是如何实现预览画面方向校正的。</p>
+<p>如果你有自己看过 Camera 的官方 API 文档，你会发现官方已经给我们写好了一个同时考虑屏幕方向和摄像头传感器方向的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getCameraDisplayOrientation</span><span class="params">(Camera.CameraInfo cameraInfo)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> rotation = getWindowManager().getDefaultDisplay().getRotation();</span><br><span class="line">    <span class="keyword">int</span> degrees = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">switch</span> (rotation) &#123;</span><br><span class="line">        <span class="keyword">case</span> Surface.ROTATION_0:</span><br><span class="line">            degrees = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Surface.ROTATION_90:</span><br><span class="line">            degrees = <span class="number">90</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Surface.ROTATION_180:</span><br><span class="line">            degrees = <span class="number">180</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> Surface.ROTATION_270:</span><br><span class="line">            degrees = <span class="number">270</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> result;</span><br><span class="line">    <span class="keyword">if</span> (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) &#123;</span><br><span class="line">        result = (cameraInfo.orientation + degrees) % <span class="number">360</span>;</span><br><span class="line">        result = (<span class="number">360</span> - result) % <span class="number">360</span>;  <span class="comment">// compensate the mirror</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  <span class="comment">// back-facing</span></span><br><span class="line">        result = (cameraInfo.orientation - degrees + <span class="number">360</span>) % <span class="number">360</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你已经完全理解前面介绍的那些角度的概念，那你应该很容易就能理解上面这段代码，实际上就是通过 WindowManager 获取当前的屏幕方向，然后再参照摄像头传感器方向以及是否是前后置，最后计算出我们实际要旋转的角度。</p>
+<p>计算出要矫正的角度之后，我们要通过 Camera.setDisplayOrientation() 方法设置画面的矫正方向，下面是 Demo 中开启相机之后，马上配置画面矫正方向的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">openCamera</span><span class="params">(<span class="keyword">int</span> cameraId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;You must close previous camera before open a new one.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">        mCamera = Camera.open(cameraId);</span><br><span class="line">        mCameraId = cameraId;</span><br><span class="line">        mCameraInfo = cameraId == mFrontCameraId ? mFrontCameraInfo : mBackCameraInfo;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;Camera[&quot;</span> + cameraId + <span class="string">&quot;] has been opened.&quot;</span>);</span><br><span class="line">        <span class="keyword">assert</span> mCamera != <span class="keyword">null</span>;</span><br><span class="line">        mCamera.setDisplayOrientation(getCameraDisplayOrientation(mCameraInfo));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-适配预览比例"><a href="#7-适配预览比例" class="headerlink" title="7 适配预览比例"></a>7 适配预览比例</h1><p>前面介绍矫正预览画面方向的时候，我们看到了画面变形的情况，这因为展示预览画面的 Surface 和预览尺寸的比例不一致导致的，所以接下来我们要学习的是如何适配不同的预览比例。实际上预览比例的适配有两种方式：</p>
+<ol>
+<li>根据预览比例修改 Surface 的比例，这个是我们实际业务中经常用的方式，比如用户选择了 4:3 的预览比例，这个时候我们会选取 4:3 的预览尺寸并且把 Surface 修改成 4:3 的比例，从而让画面不会变形。</li>
+<li>根据 Surface 的比例修改预览比例，这种情况适用于 Surface 的比例是固定的，然后根据 Surface 的比例去选取适合的预览尺寸。</li>
+</ol>
+<p>在我们的 Demo 中，出于简化的目的，我们选择了第二种方式适配比例，因为这种方式实现起来比较简单，所以我们会写一个自定义的 SurfaceView，让它的比例固定是 4:3，它的宽度固定填满父布局，高度根据比例动态计算：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SurfaceView43</span> <span class="keyword">extends</span> <span class="title">SurfaceView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SurfaceView43</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> width = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">        <span class="keyword">int</span> height = width / <span class="number">3</span> * <span class="number">4</span>;</span><br><span class="line">        setMeasuredDimension(width, height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的 SurfaceView43 使我们自定义的 SurfaceView，它的比例固定为 4:3，所以在它的 surfaceChanged() 回调中拿到的宽高的比例固定是 4:3，我们根据这个宽高比去调用前面定义好的设置预览尺寸方法就可以设置正确比例的预览尺寸：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setPreviewSize</span><span class="params">(<span class="keyword">int</span> shortSide, <span class="keyword">int</span> longSide)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span> &amp;&amp; shortSide != <span class="number">0</span> &amp;&amp; longSide != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> aspectRatio = (<span class="keyword">float</span>) longSide / shortSide;</span><br><span class="line">        Camera.Parameters parameters = mCamera.getParameters();</span><br><span class="line">        List&lt;Camera.Size&gt; supportedPreviewSizes = parameters.getSupportedPreviewSizes();</span><br><span class="line">        <span class="keyword">for</span> (Camera.Size previewSize : supportedPreviewSizes) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">float</span>) previewSize.width / previewSize.height == aspectRatio &amp;&amp; previewSize.height &lt;= shortSide &amp;&amp; previewSize.width &lt;= longSide) &#123;</span><br><span class="line">                parameters.setPreviewSize(previewSize.width, previewSize.height);</span><br><span class="line">                mCamera.setParameters(parameters);</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;setPreviewSize() called with: width = &quot;</span> + previewSize.width + <span class="string">&quot;; height = &quot;</span> + previewSize.height);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过上面的比例适配之后，相机的预览画面就应该固定是 4:3 的比例并且不会变形了。</p>
+<h1 id="8-获取预览数据"><a href="#8-获取预览数据" class="headerlink" title="8 获取预览数据"></a>8 获取预览数据</h1><p>开启相机预览的时候我们可以通过回调方法获取相机的预览数据，并且可以配置预览数据的数据格式，拿到预览数据之后进而做一些算法处理什么的。首先我们要通过 Parameters.getSupportedPreviewFormats() 方法获取相机支持哪些预览数据格式，所以我们定义了下面的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断指定的预览格式是否支持。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isPreviewFormatSupported</span><span class="params">(Camera.Parameters parameters, <span class="keyword">int</span> format)</span> </span>&#123;</span><br><span class="line">    List&lt;Integer&gt; supportedPreviewFormats = parameters.getSupportedPreviewFormats();</span><br><span class="line">    <span class="keyword">return</span> supportedPreviewFormats != <span class="keyword">null</span> &amp;&amp; supportedPreviewFormats.contains(format);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>确定了你要的数据格式是支持的之后，就可以通过 Parameters.setPreviewFormat() 放配置预览数据的格式了，代码片段如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PREVIEW_FORMAT = ImageFormat.NV21;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isPreviewFormatSupported(parameters, PREVIEW_FORMAT)) &#123;</span><br><span class="line">    parameters.setPreviewFormat(PREVIEW_FORMAT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面说到我们是通过回调的方式获取相机预览数据的，所以相机为我们提供了一个回调接口叫 Camera.PreviewCallback，我们只需实现该接口并且注册给相机就可以在预览的时候接收到数据了，注册回调接口的方式有两种：</p>
+<ul>
+<li>setPreviewCallback()：注册预览回调</li>
+<li>setPreviewCallbackWithBuffer()：注册预览回调，并且使用已经配置好的缓冲池</li>
+</ul>
+<p>使用 setPreviewCallback() 注册预览回调获取预览数据是最简单的，因为你不需要其他配置流程，直接注册即可，但是出于性能考虑，官方推荐我们使用 setPreviewCallbackWithBuffer()，因为它会使用我们配置好的缓冲对象回调预览数据，避免重复创建内存占用很大的对象。所以接下来我们重点介绍如何根据预览尺寸配置对象池并注册回调，整个步骤如下：</p>
+<ol>
+<li>根据需求确定预览尺寸</li>
+<li>根据需求确定预览数据格式</li>
+<li>根据预览尺寸和数据格式计算出每一帧画面要占用的内存大小</li>
+<li>通过 addCallbackBuffer() 方法提前添加若干个创建好的 byte 数组对象作为缓冲对象供回调预览数据使用</li>
+<li>通过 setPreviewCallbackWithBuffer() 注册预览回调</li>
+<li>使用完缓冲对象之后，通过 addCallbackBuffer() 方法回收缓冲对象</li>
+</ol>
+<p>根据上述步骤，我们修改原来设置预览尺寸的方法，在配置预览尺寸的同时根据预览尺寸和数据格式配置缓冲对象，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setPreviewSize</span><span class="params">(<span class="keyword">int</span> shortSide, <span class="keyword">int</span> longSide)</span> </span>&#123;</span><br><span class="line">    Camera camera = mCamera;</span><br><span class="line">    <span class="keyword">if</span> (camera != <span class="keyword">null</span> &amp;&amp; shortSide != <span class="number">0</span> &amp;&amp; longSide != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> aspectRatio = (<span class="keyword">float</span>) longSide / shortSide;</span><br><span class="line">        Camera.Parameters parameters = camera.getParameters();</span><br><span class="line">        List&lt;Camera.Size&gt; supportedPreviewSizes = parameters.getSupportedPreviewSizes();</span><br><span class="line">        <span class="keyword">for</span> (Camera.Size previewSize : supportedPreviewSizes) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">float</span>) previewSize.width / previewSize.height == aspectRatio &amp;&amp; previewSize.height &lt;= shortSide &amp;&amp; previewSize.width &lt;= longSide) &#123;</span><br><span class="line">                parameters.setPreviewSize(previewSize.width, previewSize.height);</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;setPreviewSize() called with: width = &quot;</span> + previewSize.width + <span class="string">&quot;; height = &quot;</span> + previewSize.height);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (isPreviewFormatSupported(parameters, PREVIEW_FORMAT)) &#123;</span><br><span class="line">                    parameters.setPreviewFormat(PREVIEW_FORMAT);</span><br><span class="line">                    <span class="keyword">int</span> frameWidth = previewSize.width;</span><br><span class="line">                    <span class="keyword">int</span> frameHeight = previewSize.height;</span><br><span class="line">                    <span class="keyword">int</span> previewFormat = parameters.getPreviewFormat();</span><br><span class="line">                    PixelFormat pixelFormat = <span class="keyword">new</span> PixelFormat();</span><br><span class="line">                    PixelFormat.getPixelFormatInfo(previewFormat, pixelFormat);</span><br><span class="line">                    <span class="keyword">int</span> bufferSize = (frameWidth * frameHeight * pixelFormat.bitsPerPixel) / <span class="number">8</span>;</span><br><span class="line">                    camera.addCallbackBuffer(<span class="keyword">new</span> <span class="keyword">byte</span>[bufferSize]);</span><br><span class="line">                    camera.addCallbackBuffer(<span class="keyword">new</span> <span class="keyword">byte</span>[bufferSize]);</span><br><span class="line">                    camera.addCallbackBuffer(<span class="keyword">new</span> <span class="keyword">byte</span>[bufferSize]);</span><br><span class="line">                    Log.d(TAG, <span class="string">&quot;Add three callback buffers with size: &quot;</span> + bufferSize);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                camera.setParameters(parameters);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，我们使用 PixelFormat 工具类根据当前的预览尺寸和格式计算出每一个像素占用多少 Bit，进而算出一帧画面需要占用的内存大小，最后创建三个 Buffer 通过 addCallbackBuffer() 添加给相机供相机循环使用。</p>
+<p>当面我们开启预览的时候，相机就会通过 Camera.PreviewCallback 将每一帧画面的数据填充到 Buffer 里传递给我们，我们在使用完 Buffer 之后，必须通过 addCallbackBuffer() 将用完的 Buffer 重新设置回去一遍相机继续重复利用该缓冲，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">PreviewCallback</span> <span class="keyword">implements</span> <span class="title">Camera</span>.<span class="title">PreviewCallback</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span><span class="params">(<span class="keyword">byte</span>[] data, Camera camera)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在使用完 Buffer 之后记得回收复用。</span></span><br><span class="line">        camera.addCallbackBuffer(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：在预览回调方法里使用完 Buffer 之后，记得一定要调用 addCallbackBuffer() 将 Buffer 重新添加到缓冲池里供相机使用。</p>
+</blockquote>
+<h1 id="9-切换前后置摄像头"><a href="#9-切换前后置摄像头" class="headerlink" title="9 切换前后置摄像头"></a>9 切换前后置摄像头</h1><p>实际需求经常要求 APP 能够支持前后置摄像头的切换，所以这里我们也介绍下如何实现前后置摄像头的切换。大部分情况下我们在切换前后置摄像头的时候，都会直接复用同一个 Surface，所以我们会在 surfaceChanged() 的时候把 Surface 保存下来，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">PreviewSurfaceCallback</span> <span class="keyword">implements</span> <span class="title">SurfaceHolder</span>.<span class="title">Callback</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">surfaceCreated</span><span class="params">(SurfaceHolder holder)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">surfaceChanged</span><span class="params">(SurfaceHolder holder, <span class="keyword">int</span> format, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">        mPreviewSurface = holder;</span><br><span class="line">        mPreviewSurfaceWidth = width;</span><br><span class="line">        mPreviewSurfaceHeight = height;</span><br><span class="line">        setupPreview(holder, width, height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">surfaceDestroyed</span><span class="params">(SurfaceHolder holder)</span> </span>&#123;</span><br><span class="line">        mPreviewSurface = <span class="keyword">null</span>;</span><br><span class="line">        mPreviewSurfaceWidth = <span class="number">0</span>;</span><br><span class="line">        mPreviewSurfaceHeight = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就是添加一个切换前后置的按钮，当点击按钮的时候回去获取和当前摄像头 ID 相反方向的 ID，所以我们定义了一个 switchCameraId() 方法，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 切换前后置时切换ID</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">switchCameraId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCameraId == mFrontCameraId &amp;&amp; hasBackCamera()) &#123;</span><br><span class="line">        <span class="keyword">return</span> mBackCameraId;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mCameraId == mBackCameraId &amp;&amp; hasFrontCamera()) &#123;</span><br><span class="line">        <span class="keyword">return</span> mFrontCameraId;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;No available camera id to switch.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后就是走一个标准的切换前后置摄像头流程了：</p>
+<ol>
+<li>停止预览</li>
+<li>关闭当前摄像头</li>
+<li>开启新的摄像头</li>
+<li>配置预览尺寸</li>
+<li>配置预览 Surface</li>
+<li>开启预览</li>
+</ol>
+<p>因为我们的 Demo 中使用 HandlerThread 控制了相机的操作流程，所以你可以看到如下代码，具体的实现请看 Demo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">OnSwitchCameraButtonClickListener</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        Handler cameraHandler = mCameraHandler;</span><br><span class="line">        SurfaceHolder previewSurface = mPreviewSurface;</span><br><span class="line">        <span class="keyword">int</span> previewSurfaceWidth = mPreviewSurfaceWidth;</span><br><span class="line">        <span class="keyword">int</span> previewSurfaceHeight = mPreviewSurfaceHeight;</span><br><span class="line">        <span class="keyword">if</span> (cameraHandler != <span class="keyword">null</span> &amp;&amp; previewSurface != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> cameraId = switchCameraId();<span class="comment">// 切换摄像头 ID</span></span><br><span class="line">            cameraHandler.sendEmptyMessage(MSG_STOP_PREVIEW);<span class="comment">// 停止预览</span></span><br><span class="line">            cameraHandler.sendEmptyMessage(MSG_CLOSE_CAMERA);<span class="comment">// 关闭当前的摄像头</span></span><br><span class="line">            cameraHandler.obtainMessage(MSG_OPEN_CAMERA, cameraId, <span class="number">0</span>).sendToTarget();<span class="comment">// 开启新的摄像头</span></span><br><span class="line">            cameraHandler.obtainMessage(MSG_SET_PREVIEW_SIZE, previewSurfaceWidth, previewSurfaceHeight).sendToTarget();<span class="comment">// 配置预览尺寸</span></span><br><span class="line">            cameraHandler.obtainMessage(MSG_SET_PREVIEW_SURFACE, previewSurface).sendToTarget();<span class="comment">// 配置预览 Surface</span></span><br><span class="line">            cameraHandler.sendEmptyMessage(MSG_START_PREVIEW);<span class="comment">// 开启预览</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，本章就介绍完了，谢谢。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/08/camera1-tutorial-chapter1/" class="post-title-link" itemprop="url">Android Camera1 教程 · 第一章 · 开启相机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-08 23:12:06" itemprop="dateCreated datePublished" datetime="2018-11-08T23:12:06+08:00">2018-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:54:34" itemprop="dateModified" datetime="2021-01-06T21:54:34+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
 <p>本教程已经停更，<a href="https://darylgo.github.io/2019/01/22/camera2-tutorial-chapter1/">《Camera2 教程》</a>持续更新中。</p>
 </blockquote>
-<p>从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。</p></div><p class="readmore"><a href="/2018/11/08/camera1-tutorial-chapter1/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></h1><div class="post-meta">2018-03-10</div><div class="post-content"><p>本文主要讲述一些个人推荐使用 Kotlin 的理由。</p></div><p class="readmore"><a href="/2018/03/10/why-kotlin/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></h1><div class="post-meta">2017-05-16</div><div class="post-content"><p>“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：</p>
+<p>从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。</p>
+<p>本文所使用的相机 API 是 android.hardware.Camera，至于 Camera2 的知识我打算另外写。我会开发一个具有完整相机功能的应用程序，并且将相机知识分成多个篇章进行介绍，而本章所要介绍的就是相机的开启流程。</p>
+<p>阅读本章之后，你将学会以下几个知识点：</p>
+<ol>
+<li>如何注册相机相关的权限</li>
+<li>如何配置相机特性要求</li>
+<li>如何获取摄像头的个数</li>
+<li>如何开启摄像头</li>
+<li>如何关闭摄像头</li>
+</ol>
+<p>你可以在 <a target="_blank" rel="noopener" href="https://github.com/darylgo/Camera1Sample">https://github.com/darylgo/Camera1Sample</a> 下载相关的源码。</p>
+<h1 id="1-创建相机项目"><a href="#1-创建相机项目" class="headerlink" title="1 创建相机项目"></a>1 创建相机项目</h1><p>正如前所说的，我会开发一个具有完整相机功能的应用程序，所以第一步要做的就是创建一个相机项目，这里我用 AS 创建了一个叫 Camera1Sample 的项目，并且有一个 Activity 叫 MainActivity。</p>
+<p>为了降低源码的阅读难度，我不打算引入任何的第三方库，不去关注性能问题，也不进行任何模式上的设计，大部分的代码我都会写在这个 MainActivity 里面，所有的功能的实现都尽可能简化，让阅读者可以只关注重点。</p>
+<h1 id="2-注册相关权限"><a href="#2-注册相关权限" class="headerlink" title="2 注册相关权限"></a>2 注册相关权限</h1><p>在使用相机 API 之前，必须在 AndroidManifest.xml 注册相机权限 android.permission.CAMERA，声明我们开发的应用程序需要相机权限，另外如果你有保存照片的操作，那么读写 SD 卡的权限也是必须的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;com.darylgo.camera.sample&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.CAMERA&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是 6.0 以上的系统需要我们在程序运行的时候进行动态权限申请，所以我们需要在程序启动的时候去检查权限，有任何一个必要的权限被用户拒绝时，我们就弹窗提示用户程序因为权限被拒绝而无法正常工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> REQUEST_PERMISSIONS_CODE = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] REQUIRED_PERMISSIONS = &#123;Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onResume();</span><br><span class="line">        <span class="comment">// 动态权限检查</span></span><br><span class="line">        <span class="keyword">if</span> (!isRequiredPermissionsGranted() &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</span><br><span class="line">            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断我们需要的权限是否被授予，只要有一个没有授权，我们都会返回 false。</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true 权限都被授权</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isRequiredPermissionsGranted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (String permission : REQUIRED_PERMISSIONS) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>, permission) == PackageManager.PERMISSION_DENIED) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-配置相机特性要求"><a href="#3-配置相机特性要求" class="headerlink" title="3 配置相机特性要求"></a>3 配置相机特性要求</h1><p>你一定不希望用户在一台没有任何摄像头的手机上安装你的相机应用程序吧，因为那样做是没有意义的。所以接下来要做的就是在 AndroidManifest.xml 中配置一些程序运行时必要的相机特性，如果这些特性不支持，那么用户在安装 apk 的时候就会因为条件不符合而无法安装。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;com.darylgo.camera.sample&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.CAMERA&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;uses-feature</span><br><span class="line">        android:name=&quot;android.hardware.camera&quot;</span><br><span class="line">        android:required=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们通过 <uses-feature> 标签声明了我们的应用程序必须在具有摄像头的手机上才能运行。另外你还可以配置更多的特性要求，例如必须支持自动对焦的摄像头才能运行你的应用程序，更多的特性可以在 <a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/manifest/uses-feature-element.html#hw-features">官方文档</a> 上查询。</p>
+<h1 id="4-获取摄像头的个数"><a href="#4-获取摄像头的个数" class="headerlink" title="4 获取摄像头的个数"></a>4 获取摄像头的个数</h1><p>因为市面上的安卓手机千千万，并不是所有的手机都支持前后置摄像头，甚至有手机一个摄像头都没有，所以我们首先要确定当前的设备支持多少个摄像头。我们可以通过 Camera.getNumberOfCameras() 获取设备支持的摄像头个数，它是一个静态方法，返回一个 int 值代表摄像头个数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> numberOfCameras = Camera.getNumberOfCameras();<span class="comment">// 获取摄像头个数</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="5-根据-ID-获取-CameraInfo"><a href="#5-根据-ID-获取-CameraInfo" class="headerlink" title="5 根据 ID 获取 CameraInfo"></a>5 根据 ID 获取 CameraInfo</h1><p>Camera.CameraInfo 正如其名，里面存储了几个相机相关的信息，信息并不多：</p>
 <ul>
-<li> 代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。</li></div><p class="readmore"><a href="/2017/05/16/write-readable-code/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></h1><div class="post-meta">2017-04-10</div><div class="post-content"><p>AsyncTask 是一个简单实用的多线程异步任务工具类。</p>
-<p>Android 开发中经常遇到需要将耗时的操作放到子线程中进行异步执行，等执行完毕之后再通知主线程更新 UI 的情况，例如异步加载网络图片、异步读取文件等，如果在主线程中执行这些耗时操作，就会造成卡顿的情况，甚至是 ANR。开启一个线程处理耗时任务很简单，创建一个 Thread 对象，在 run() 方法中去执行耗时操作即可，但是当耗时任务执行完毕要通知主线程更新 UI 的时候就比较麻烦了，我们需要创建一个主线程的 Handler，然后通过它向主线程发送更新 UI 的消息进行 UI 更新，这一整个过程十分麻烦。</p></div><p class="readmore"><a href="/2017/04/10/android-async-task/">阅读全文</a></p></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://darylgo.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/camera2-tutorial-chapter1/">Android Camera2 教程 · 第一章 · 概览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/camera1-tutorial-chapter1/">Android Camera1 教程 · 第一章 · 开启相机</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">学海无涯.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+<li><p><strong>facing</strong></p>
+<p>摄像头的方向，可选值有 Camera.CameraInfo.CAMERA_FACING_BACK 和 Camera.CameraInfo.CAMERA_FACING_FRONT。</p>
+</li>
+<li><p><strong>orientation</strong></p>
+<p>摄像头的画面经过顺时针旋转多少度之后是正常画面，这个属性比较难以理解，我们在后面会专门解释。</p>
+</li>
+<li><p><strong>canDisableShutterSound</strong></p>
+<p>是否支持静音拍照，也就是说在用户拍照的时候是否会“咔嚓”一声，例如在日本由于隐私政策，所有手机都是不允许静音拍照的，那么该字段就会返回 false。该字段一般配合 Camera.enableShutterSound(boolean) 使用，当它返回 false 的时候，即使你调用 Camera.enableShutterSound(false)，相机在拍照的时候也会发出声音。</p>
+</li>
+</ul>
+<p>好了，Camera.CameraInfo 其实就这么几个字段，最重要的就是 facing 和 orientation 了，我们可以通过 facing 判断摄像头是前置还是后置，通过 orientation 值取校正摄像头的画面。接下来，我们看下如何获取 Camera.CameraInfo 实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">private</span> Camera.CameraInfo mFrontCameraInfo = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mFrontCameraId = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">private</span> Camera.CameraInfo mBackCameraInfo = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBackCameraId = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化摄像头信息。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initCameraInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> numberOfCameras = Camera.getNumberOfCameras();<span class="comment">// 获取摄像头个数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> cameraId = <span class="number">0</span>; cameraId &lt; numberOfCameras; cameraId++) &#123;</span><br><span class="line">        Camera.CameraInfo cameraInfo = <span class="keyword">new</span> Camera.CameraInfo();</span><br><span class="line">        Camera.getCameraInfo(cameraId, cameraInfo);</span><br><span class="line">        <span class="keyword">if</span> (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) &#123;</span><br><span class="line">            <span class="comment">// 后置摄像头信息</span></span><br><span class="line">            mBackCameraId = cameraId;</span><br><span class="line">            mBackCameraInfo = cameraInfo;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT)&#123;</span><br><span class="line">            <span class="comment">// 前置摄像头信息</span></span><br><span class="line">            mFrontCameraId = cameraId;</span><br><span class="line">            mFrontCameraInfo = cameraInfo;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码可以看出 Camera.CameraInfo 的获取非常简单，只需要你创建一个 Camera.CameraInfo 实例，然后通过 Camera.getCameraInfo(int, Camera.CameraInfo) 方法就可以将相机信息填充到你创建的实例中。另外值得注意的一点是，相机的 ID 实际上就是从 0 到 numberOfCameras 递增，大部分手机的后置摄像头的 ID 是 0，前置摄像头的 ID 是 1，但是我们最好还是通过 facing 字段去判断比较靠谱。</p>
+<blockquote>
+<p>Tips：Camera.getNumberOfCameras() 和 Camera.getCameraInfo(int, Camera.CameraInfo) 都不需要相机权限。</p>
+</blockquote>
+<h1 id="6-开启相机"><a href="#6-开启相机" class="headerlink" title="6 开启相机"></a>6 开启相机</h1><p>接下来我们要做的就是调用 Camera.open(int) 方法开启相机了，需要注意的是你必须确保在开启相机之前已经被授予了相机权限，否则会抛权限异常。一个比较稳妥的做法就是每次开启相机之前检查相机权限。下面是主要代码前段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 开启指定摄像头</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">openCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;相机已经被开启，无法同时开启多个相机实例！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">        <span class="keyword">if</span> (hasFrontCamera()) &#123;</span><br><span class="line">            <span class="comment">// 优先开启前置摄像头</span></span><br><span class="line">            mCamera = Camera.open(mFrontCameraId);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasBackCamera()) &#123;</span><br><span class="line">            <span class="comment">// 没有前置，就尝试开启后置摄像头</span></span><br><span class="line">            mCamera = Camera.open(mBackCameraId);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;没有任何相机可以开启！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-关闭相机"><a href="#7-关闭相机" class="headerlink" title="7 关闭相机"></a>7 关闭相机</h1><p>和其他硬件资源的使用一样，当我们不再需要使用相机时记得调用 Camera.release() 方法及时关闭相机回收资源。关闭相机的操作至关重要，因为如果你一直占用相机资源，其他基于相机开发的功能都会无法正常使用，严重情况下直接导致其他相机相关的 APP 无法正常使用。那么在什么时候关闭相机最合适呢？我个人的建议是在  onPause()  的时候就一定要关闭相机，因为在这个时候相机页面已经不是用户关注的焦点，大部分情况下已经可以关闭相机了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onPause();</span><br><span class="line">    closeCamera();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 关闭相机。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">closeCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mCamera.release();</span><br><span class="line">        mCamera = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，我们关于开启相机的教程就结束了，下一章我们会介绍如何开启预览。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2018/03/10/why-kotlin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/10/why-kotlin/" class="post-title-link" itemprop="url">为什么使用 Kotlin</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-10 22:58:40" itemprop="dateCreated datePublished" datetime="2018-03-10T22:58:40+08:00">2018-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:53:41" itemprop="dateModified" datetime="2021-01-06T21:53:41+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文主要讲述一些个人推荐使用 Kotlin 的理由。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/10/why-kotlin/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2017/05/16/write-readable-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/16/write-readable-code/" class="post-title-link" itemprop="url">如何提高代码的可读性</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-16 22:43:28" itemprop="dateCreated datePublished" datetime="2017-05-16T22:43:28+08:00">2017-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:57:01" itemprop="dateModified" datetime="2021-01-06T21:57:01+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：</p>
+<ul>
+<li>代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。</li>
+<li>代码也是公司的一笔特殊财富，因为它不可能永远被同一个程序员维护，如果代码的可读性很差的话，很可能导致这笔财富无法传承下来，前功尽弃。</li>
+<li>具有良好可读性的代码能让功能的扩展和 BUG 的修复更顺利，这一点应该很容易理解，增加新功能、修改某个 BUG 都需要你首先理解代码。</li>
+</ul>
+<p>所以，提高代码可读性是很有必要的，本文将介绍个人在实践中认为能够提高代码可读性的方法，希望对大家有所帮助。</p>
+<h1 id="1-重视代码规范"><a href="#1-重视代码规范" class="headerlink" title="1 重视代码规范"></a>1 重视代码规范</h1><p>重视代码规范是提高代码可读性最基本和最简单的方式，每一门语言，每一个公司或组织都会有自己的代码规范，制定这些规范的目的就是为了让大家能够更容易阅读和理解代码。例如当我们看到某一个变量名称前面带有 <code>m</code> 前缀时，我们就知道它是一个成员变量（member）；当我们看到某个方法以 <code>on</code> 开头时，我们就知道它是一个回调方法；当我们看到某个变量是由大写字母和下划线组成时，我们就知道它是一个静态常量。诸如此类的规范有很多，只要我们遵循规范，我们的代码可读性起码会有一个最低的保障。</p>
+<h1 id="2-多写注释"><a href="#2-多写注释" class="headerlink" title="2 多写注释"></a>2 多写注释</h1><p>注释本应作为代码不可分割一部分，因为它是对代码最直观最详细的说明，你可以把设计思路、用法和注意事项都写在注释里面，这样无论是对你自己还是对别人都是有好处的，它让你能在很久没有接触代码的时候快速回忆起当初的想法，能让阅读源码的人更快理解你的思路，让使用的人更清楚用法。</p>
+<p>例如我们有一个设置年龄的方法叫 <code>setAge(int age)</code>，从方法名称上我们就可以知道它的作用，但是其内部还做了一些其他处理，这些处理是方法命无法体现的，所以加上一段注释说明就很有必要了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置用户的年龄，当 age &lt; 0 的时候会设置 age = 0，当 age &gt; 100 的时候会设置 age = 100。</span></span><br><span class="line"><span class="comment"> * 另外你可以通过 &#123;<span class="doctag">@link</span> #getAge()&#125; 方法获取用户的年龄。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> age 用户年龄[0, 100]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #getAge()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (age &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        age = <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (age &gt; <span class="number">100</span>) &#123;</span><br><span class="line">        age = <span class="number">100</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-重写注释"><a href="#3-重写注释" class="headerlink" title="3 重写注释"></a>3 重写注释</h1><p>当我们重写某个方法并且修改了方法的逻辑导致它的行为与原有的注释描述不一致的时候，我们应该对注释也进行重写，以确保注释内容和代码逻辑一致。例如上面的提到的 <code>setAge(int age)</code> 方法，我们对它进行重写，改成接收任意数值的年龄，此时原有的注释内容就需要修改，因为它已经不适用于现在的逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置用户的年龄，另外你可以通过 &#123;<span class="doctag">@link</span> #getAge()&#125; 方法获取用户的年龄。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> age 任意数值的用户年龄</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #getAge()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-使用注解"><a href="#4-使用注解" class="headerlink" title="4 使用注解"></a>4 使用注解</h1><p>注解可以用于替换一些简短的注释描述，并且提高变量、方法和类的可读性，最典型的例子就是 <code>@Override</code> 注解，它告诉我们被注解的方法是对父类或者接口方法的重写或实现，相比于注释“这是一个重写方法”，注解 <code>@Override</code> 要更简单快捷得多。例如下面的代码我们实现了 <code>OnClickListener</code> 接口的 <code>onClick(View view)</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListener</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 实现 onClick 方法。</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大多数人只会使用一些现有的注解，而很少自己创建注解，其实我们可以自己创建一些有用的注解来提高代码的可读性，下面我们以 <a target="_blank" rel="noopener" href="https://github.com/greenrobot/EventBus">EventBus</a> 为例，说明自定义注解是如何提高代码可读性的。</p>
+<p>EventBus 是一个应用在 Android 上的事件总线，我们可以使用它在任意地方发布事件，并且在任意地方注册并接收事件。EventBus 有三个弊端，一是我们经常搞不清楚某一个事件是来自哪里的，因为任何地方都可以发送同一个事件；二是我们同样也经常搞不清楚某个事件会在哪些地方被接收，因为任何地方都可以注册并接收事件；三是早期的 EventBus 事件接收方法要求你必须以 <code>onEventXXXX</code> 的方式命名，这样的命名其实和普通方法并没有太大的区别，我们需要一种方式让它更加凸显，以防它被误以为是普通方法而被删除。这时候我们可以利用注解让事件接收方法一眼就被认出来，并且还能看出有哪些地方会发出该事件，哪些地方会接收到我们发出的事件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EventBus 事件注解，用于标识某个方法是 EventBus 方法，并且注明事件</span></span><br><span class="line"><span class="comment"> * 的接收方或发送方。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.SOURCE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Event &#123;</span><br><span class="line">    Class[] from() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">    Class[] to() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们假设 A 和 B 都可以发送一个名叫 <code>MyEvent</code> 的事件到 C 和 D，我们可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">D</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码，我们通过 <code>@Event</code> 注解一眼就认出来 EventBus 方法，并且还能知道 A 将事件发送到了 C 和 D，而 C 接收到的事件可能来自 A 或 B。</p>
+<h1 id="5-多用-Nullable，慎用-NonNull"><a href="#5-多用-Nullable，慎用-NonNull" class="headerlink" title="5 多用 @Nullable，慎用 @NonNull"></a>5 多用 @Nullable，慎用 @NonNull</h1><p>【@Nullable】是一个用于标注某个变量、参数或方法返回值可能为空指针的注解，当我们看到该注解的时候就要小心了，它意味着如果我们不做判空处理的话，很可能出现空指针异常，并且在 Android Studio 上会以黄色背景警告我们。那么什么时候该使用该注解呢？我的原则只要某个变量、参数或方法返回值有一丝可能性为空，就使用该注解，这起码可以避免空指针异常的出现。</p>
+<img src="/2017/05/16/write-readable-code/nullable.png" class="">
+
+<hr>
+<p>【@NonNull】是一个用于标注某个变量、参数和方法返回值不可能为空指针的注解，当我们看到该注解的时候，就可以认为被标记的变量、参数或方法返回值不可能为空，无需做判空处理，同时 Android Studio 也会在你进行判空处理的时候提醒你没有必要这样做。对于这个注解，我个人的原则是除非 100%肯定不会空指针，否则绝对不用。</p>
+<img src="/2017/05/16/write-readable-code/nonnull.png" class="">
+
+<h1 id="6-使用-MainThread-和-WorkerThread"><a href="#6-使用-MainThread-和-WorkerThread" class="headerlink" title="6 使用 @MainThread 和 @WorkerThread"></a>6 使用 @MainThread 和 @WorkerThread</h1><p>【@MainThread】是一个用于标注某个类或方法必须在主线程中使用的注解，当我们看到该注解的时候，就要注意当前的操作是否处于主线程，否则很有可能出错。例如我们有个方法用于更新 <code>TextView</code> 的内容，因为涉及到 UI 的更新操作，必须在主线程进行，所以我们可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MainThread</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">    mTvTitle.setText(title);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>【@WorkerThread】是一个用于标注某个类或方法必须在子线程中使用的注解，常见的情况就是不适合在主线程中进行的耗时操作，当我们看到该注解的时候，应该创建一个子线程去使用被注解的类或方法。例如我们有个方法用于将 <code>Bitmap</code> 保存到 SD 卡中，涉及到 I/O 的操作理应在子线程中进行，所以我们可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveImage</span><span class="params">(Bitmap image, String path)</span> throw IOException </span>&#123;</span><br><span class="line">    FileOutputStream outputStream = <span class="keyword">new</span> FileOutputStream(path);</span><br><span class="line">    image.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, outputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-使用-return-减少-if-嵌套"><a href="#7-使用-return-减少-if-嵌套" class="headerlink" title="7 使用 return 减少 if 嵌套"></a>7 使用 return 减少 if 嵌套</h1><p>当我们的方法中有一系列业务逻辑是按顺序执行，并且每一个业务逻辑的执行前提是前一个业务逻辑执行成功时，我们可以考虑使用 <code>return</code> 关键字在业务逻辑执行失败时终止整个方法，而不是嵌套多层的 <code>if</code>。例如，我们有一个返回只为 <code>boolean</code> 类型的方法，它只有在方法内的所有业务逻辑都按顺序执行成功之后才返回 <code>true</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> isSuccess;</span><br><span class="line">    isSuccess = doSomething1();</span><br><span class="line">    <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">        isSuccess = doSomething2();</span><br><span class="line">        <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">            isSuccess = doSomething3();</span><br><span class="line">            <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">                isSuccess = doSomething4();</span><br><span class="line">                <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">                    isSuccess = doSomething5();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> isSuccess;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于这种多重 <code>if</code> 嵌套的代码，我们可以在某个业务逻辑执行失败的时候 <code>return false</code> 来终止整个方法，这样做的好处是让人一看就知道里面的逻辑是从上到下按顺序执行的，更容易理解，具体写法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> isSuccess;</span><br><span class="line">    isSuccess = doSomething1();</span><br><span class="line">    <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isSuccess = doSomething2();</span><br><span class="line">    <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isSuccess = doSomething3();</span><br><span class="line">    <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isSuccess = doSomething4();</span><br><span class="line">    <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isSuccess = doSomething5();</span><br><span class="line">    <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> isSuccess;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-使用-Map-代替分支语句"><a href="#8-使用-Map-代替分支语句" class="headerlink" title="8 使用 Map 代替分支语句"></a>8 使用 Map 代替分支语句</h1><p>当我们需要使用条件语句语句根据不同的条件筛选出对应的结果，并且条件很多导致语句很长时，可以考虑使用 <code>Map</code> 代替冗长的条件判断，例如有一个方法需要根据用户输入的索引值返回对应的字母（我们不考虑算法），我们以下三种写法：</p>
+<p><strong>1 使用 if 语句</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">getLetter</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;A&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;B&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index == <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;C&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index == <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;D&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>if</code> 语句进行大量的条件筛选是最糟糕的设计，一方面代码编写麻烦，另一方面代码长度也是最长的。</p>
+<hr>
+<p><strong>2 使用 switch 语句</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">getLetter</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (index) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">return</span> <span class="string">&quot;A&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">return</span> <span class="string">&quot;B&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>: <span class="keyword">return</span> <span class="string">&quot;C&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>: <span class="keyword">return</span> <span class="string">&quot;D&quot;</span>;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>switch</code> 语句是最常见的方式，通过不同的 <code>case</code> 筛选出对应的结果，并且逻辑清晰，代码量也相对较少。</p>
+<hr>
+<p><strong>3 使用 Map</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;Integer, String&gt; LETTERS = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    LETTERS.put(<span class="number">1</span>, <span class="string">&quot;A&quot;</span>);</span><br><span class="line">    LETTERS.put(<span class="number">2</span>, <span class="string">&quot;B&quot;</span>);</span><br><span class="line">    LETTERS.put(<span class="number">3</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">    LETTERS.put(<span class="number">4</span>, <span class="string">&quot;D&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">getLetter</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> LETTERS.get(index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>Map</code> 代替 <code>switch</code> 本质上没有太大的区别，但是有些时候它可以让我们省去一个方法，例如我们完全可以省去 <code>getLetter(int)</code> 方法而直接通过 <code>Map</code> 获取想要的值。</p>
+<h1 id="9-方法调用的语法糖"><a href="#9-方法调用的语法糖" class="headerlink" title="9 方法调用的语法糖"></a>9 方法调用的语法糖</h1><p>方法调用的语法糖要求一个或多个方法的调用能够形成具有良好可读性的语句，我们通过几个简单的例子看下什么样的方法调用能够形成可以阅读的语句：</p>
+<p><strong>1 Android ValueAnimator 实例创建</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueAnimator animator = ValueAnimator.ofInt(<span class="number">0</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>我们将 <code>ValueAnimator.ofInt</code> 拆解开来会发现它其实就是<strong>“value animator of int”</strong>，也就是<strong>“整型类型的属性动画”</strong>。</p>
+<hr>
+<p><strong>2 Android AnimatorSet 动画播放顺序</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AnimatorSet animatorSet = <span class="keyword">new</span> AnimatorSet();</span><br><span class="line">animatorSet.play(anim1).width(anim2).before(anim3);</span><br></pre></td></tr></table></figure>
+
+<p>AnimatorSet 是一个能够将多个动画组合在一起并且指定动画播放顺序的工具类，上面的方法调用方式很清晰的告诉我们<strong>“在播放 anim3 之前先同时播放 anim1 和 anim2”</strong>。</p>
+<hr>
+<p><strong>3 Mockito 打桩方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">when(person.getAge()).thenReturn(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Mockito 是一个用于单元测试的框架，这里我们不探究它的用法，我们要看的是它的方法调用形式。上面的代码同样可以拆解成<strong>“when person.getAge() then return 20”</strong>，意思就是<strong>“当调用 person.getAge()方法的时候，返回 20”</strong>。</p>
+<h1 id="10-使用-Builder-代替构造方法"><a href="#10-使用-Builder-代替构造方法" class="headerlink" title="10 使用 Builder 代替构造方法"></a>10 使用 Builder 代替构造方法</h1><p>当某个类的构造方法有很多个参数或者有很多个重载版本时，我们应该考虑为这个类写一个 Builder，通过这个 Builder 创建配置并创建该类的实例。</p>
+<p>假设我们有个类用来代表一个矩形，它的名字叫做 Rectangle，它的代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> stroke)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>于是我们就可能看见这样的代码 <code>new Rectangle(1, 1, 1, 1)</code>，这样的代码可读性是很差的，因为我们无法一眼就看出这个矩形设置了哪些信息，还需要去查阅下相关的 API 文档。此外，当我们需要创建一个只需指定 <code>id</code> 和 <code>stroke</code> 的矩形的时候，我们就必须再写一个新的构造方法，当一个对象的属性较多的时候，构造方法的重载版本就可能变得非常的多，维护成本也随之提高。如果我们为 Rectangle 创建一个 Builder，通过 Builder 创建矩形实例的过程就会变得灵活而清晰很多：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Rectangle</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">        mId = builder.id;</span><br><span class="line">        mWidth = builder.width;</span><br><span class="line">        mHeight = builder.height;</span><br><span class="line">        mStroke = builder.stroke;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> height;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> stroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Builder</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Rectangle <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Rectangle(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">width</span><span class="params">(<span class="keyword">int</span> width)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.width = width;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">height</span><span class="params">(<span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.height = height;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">stroke</span><span class="params">(<span class="keyword">int</span> stroke)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.stroke = stroke;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们创建 Rectangle 实例的过程就会变成下面的样子，它不仅让我们一眼就看出矩形设置了哪些属性，而且我们还可以自由组合这些属性，达到重载构造方法想要的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Rectangle.Builder builder1 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">1</span>);</span><br><span class="line">Rectangle rect1 = builder1.width(<span class="number">1</span>).height(<span class="number">1</span>).stroke(<span class="number">1</span>).build();</span><br><span class="line"></span><br><span class="line">Rectangle.Builder builder2 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">2</span>);</span><br><span class="line">Rectangle rect2 = builder2.width(<span class="number">1</span>).height(<span class="number">1</span>).build();</span><br><span class="line"></span><br><span class="line">Rectangle.Builder builder3 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">3</span>);</span><br><span class="line">Rectangle rect3 = builder3.stroke(<span class="number">1</span>).build();</span><br></pre></td></tr></table></figure>
+
+<h1 id="11-使用-tools-优化布局预览"><a href="#11-使用-tools-优化布局预览" class="headerlink" title="11 使用 tools 优化布局预览"></a>11 使用 tools 优化布局预览</h1><p>【tools】是 Android 里进行布局排版时的一个工具，它用于在布局预览的时候设置临时属性。我们经常需要一边编写布局代码一边查看预览以确保布局正确，现在假设我们有一个 <code>TextView</code> 用来显示标题，但是标题的内容是在运行的时候动态设置的，为了开发的时候方便预览，提高复杂布局代码的可读性，我们可能会这么写：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">    android:text=&quot;测试标题&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>你一定想着等后面确定布局没问题的时候再删掉测试文案，但是事实上你很有可能忘记删除，这时候我们就可以利用 tools 这样写：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">    tools:text=&quot;测试标题&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过 tools 设置的文案只会在预览的时候生效，不会影响到实际运行的情况，这样我们可以毫无顾忌地随便填写测试文案了。tools 支持的属性还有很多，例如：</p>
+<ul>
+<li>tools:background</li>
+<li>tools:visibility</li>
+<li>tools:checked</li>
+<li>tools:src</li>
+</ul>
+<p>关于更多 tools 的用法，大家可以到网上查找。</p>
+<h1 id="12-使用-isInEditMode-优化布局预览"><a href="#12-使用-isInEditMode-优化布局预览" class="headerlink" title="12 使用 isInEditMode() 优化布局预览"></a>12 使用 isInEditMode() 优化布局预览</h1><p><code>isInEditMode()</code> 方法是用于判断 View 当前是否处于 IDE 布局编辑（预览）状态，只有在编辑状态下才会返回 <code>true</code>，当我们编写只有在运行时才能看到绘制效果的自定义 View 的时候，可以使用 <code>isInEditMode()</code> 方法让 View 在布局预览的时候就看到运行时的大概样子。例如我们通过 View 实现一个圆形不断放大缩小的动画时，正常情况我们只有在程序运行的时候才能看到动画效果，在布局预览的时候是空白一片的，我们可以通过 <code>isInEditMode()</code> 方法在编辑的时候先绘制一个圆形，让开发者大概知道这个动画 View 会是什么样子，虽然它是静止的，但是也好过一片空白：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimationView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isInEditMode()) &#123;</span><br><span class="line">            <span class="comment">// 编辑状态下绘制一个圆形，让开发者大概知道圆形的大小。</span></span><br><span class="line">            canvas.drawCircle(centerX, centerY, radius, paint);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 运行时刷新画面。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在布局预览的时候就会看到一个圆形被绘制出来，并且在程序正在运行的时候不会绘制该圆形：</p>
+<img src="/2017/05/16/write-readable-code/preview-in-edit-mode.png" class="">
+
+<blockquote>
+<p>提示：实际开发中，<code>isInEditMode()</code> 方法可以用在 View 的任何地方用于设置预览数据。</p>
+</blockquote>
+<h1 id="13-使用内部类对代码进行分类"><a href="#13-使用内部类对代码进行分类" class="headerlink" title="13 使用内部类对代码进行分类"></a>13 使用内部类对代码进行分类</h1><p>内部类有些时候可以起到类似包的代码分类功能，通过内部类对某个类内部的代码进行功能划分，可以让与该类相关的代码更具有可读性。</p>
+<p>例如我们有个日志打印工具类，里面有两种类型的方法，一种是打印用户可见的日志，另一种则是打印只有开发者可见的日志，我们可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用户可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开发者可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Developer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在调用日志打印方法时通过内部类的名称一眼就可以看出当前打印的日志是用户可见还是开发者可见的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Logger.User.d(TAG, <span class="string">&quot;打印用户可见的日志&quot;</span>);</span><br><span class="line">Logger.Developer.d(TAG, <span class="string">&quot;打印开发者可见的日志&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>类似的，我们也可以使用内部类对常量进行分类，例如我们有一个多媒体数据库叫 MediaStore，其内部分为图像数据表和视频数据表，每个表都有自己的字段，我们需要定义常量来对应这些字段，所以可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaStore</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 图像数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;image_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;image_path&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 视频数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;video_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;video_path&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在需要使用这些常量的时候就可以通过内部类区分不同类型的常量了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MediaStore.ImageTable.NAME<span class="comment">// 图像名称字段</span></span><br><span class="line">MediaStore.VideoTable.NAME<span class="comment">// 视频名称字段</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2017/04/10/android-async-task/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/04/10/android-async-task/" class="post-title-link" itemprop="url">深入理解 AsyncTask</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-10 10:57:00" itemprop="dateCreated datePublished" datetime="2017-04-10T10:57:00+08:00">2017-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:56:03" itemprop="dateModified" datetime="2021-01-06T21:56:03+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>AsyncTask 是一个简单实用的多线程异步任务工具类。</p>
+<p>Android 开发中经常遇到需要将耗时的操作放到子线程中进行异步执行，等执行完毕之后再通知主线程更新 UI 的情况，例如异步加载网络图片、异步读取文件等，如果在主线程中执行这些耗时操作，就会造成卡顿的情况，甚至是 ANR。开启一个线程处理耗时任务很简单，创建一个 Thread 对象，在 run() 方法中去执行耗时操作即可，但是当耗时任务执行完毕要通知主线程更新 UI 的时候就比较麻烦了，我们需要创建一个主线程的 Handler，然后通过它向主线程发送更新 UI 的消息进行 UI 更新，这一整个过程十分麻烦。</p>
+<p>基于上诉问题， AsyncTask 就出现了，按照官方的说法，AsyncTask 是为了解决主线程和子线程之间的交互问题，它能够在后台线程中执行耗时操作，并在把执行结果发送到主线程，而这一系列的操作都不需要你创建任何的 Thread 或 Handler 对象。AsyncTask 适合处理耗时不是很长的任务（几秒钟），所以你不应该拿它来处理耗时很长的任务，至于为什么，我们会在后面解释原因。</p>
+<h1 id="1-用法"><a href="#1-用法" class="headerlink" title="1 用法"></a>1 用法</h1><p>假设我们有一个加载本地文件的任务，需要从网络上加载 3 个文件，并且在加载每个文件的时候通知用户当前正在加载什么文件，整个过程大概需要 10 秒钟，这很明显是一个十分耗时的任务，我们就用 AsyncTask 进行一步加载。</p>
+<h2 id="1-1-继承-AsyncTask"><a href="#1-1-继承-AsyncTask" class="headerlink" title="1.1 继承 AsyncTask"></a>1.1 继承 AsyncTask</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTask</span>&lt;<span class="title">Params</span>, <span class="title">Progress</span>, <span class="title">Result</span>&gt; </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>AsyncTask 本身是一个抽象类，它要求我们必须继承它并指定三个泛型参数类型，这三个泛型参数类型依次是执行参数类型（Params）、进度值类型（Progress）和结果类型（Result）：</p>
+<ul>
+<li><p><strong>执行参数类型（Params）</strong></p>
+<p>指的是在执行异步任务的时候指定的额外参数类型，例如加载文件的 URL。</p>
+</li>
+<li><p><strong>进度值类型（Progress）</strong></p>
+<p>指的是在执行异步任务期间要更新进度情况时使用的数据类型，例如用 Integer 类型更新 ProgressBar。</p>
+</li>
+<li><p><strong>结果类型（Result）</strong></p>
+<p>指的是异步任务执行结束后返回的结果类型，例如返回 一个 Boolean 类型的数据代表异步任务是否成功。</p>
+</li>
+</ul>
+<p>所以接下来我们要做的第一步就是继承 AsyncTask 并指定参数类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFileTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码里，我们指定执行参数类型为 String 类型，因为我们在加载文件的时候需要指定三个 URL 作为参数；进度值类型为 String 类型，因为每加载一个文件的时候都要通知用户当前加载的文件名；结果类型为 Boolean，当三个任务都加载成功的时候我们返回 true 代表文件加载成功。</p>
+<p>指定完参数类型之后，我们还要实现几个方法，并且在这些方法里面写入我们的异步操作逻辑：</p>
+<ul>
+<li><p><strong>void onPreExecute()</strong></p>
+<p>该方法会主线程中执行，用于在执行异步任务之前的业务逻辑，例如弹出一个 ProgressDialog。</p>
+</li>
+<li><p><strong>Result doInBackground(Params… params)</strong></p>
+<p>从方法名称就可以知道它是在子线程中执行的，我们可以在这个方法里面执行耗时操作，例如加载文件，该方法的参数类型就是前面提到的执行参数类型，并且它是一个可变参数，也就是说我们可以一次指定多个执行参数。另外，该方法要求你返回一个你指定好的结果类型数据，该数据会在异步任务结束的时候作为 onPostExecute(Result result) 的参数。</p>
+<blockquote>
+<p>注意该方法是一个必须实现的抽象方法。</p>
+</blockquote>
+</li>
+<li><p><strong>void onPostExecute(Result result)</strong></p>
+<p>该方法会在主线程中执行，用于在执行异步任务完成之后的业务逻辑，例如关闭 ProgressDialog，该方法的参数类型就是前面提到的结果类型。</p>
+</li>
+<li><p><strong>void onProgressUpdate(Progress… values)</strong></p>
+<p>该方法会在主线程中执行，用于在执行异步任务期间更新进度情况，例如在加载文件的时候不断刷新进度条，你需要通过调用 publishProgress(Progress… values) 触发该回调，从而更新进度情况。</p>
+</li>
+</ul>
+<p>接下来，我们就要实现上述几个方法，在开始加载文件之前以 Toast 形式提示用户“开始加载文件”，在加载某一个文件的时候提示用户“正在加载文件：xxx”，在加载完所有文件的时候根据加载文件的结果提示用户文件是否都加载成功：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFilesTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoadFileTask</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务开始前提示用户。</span></span><br><span class="line">        Toast.makeText(mContext, <span class="string">&quot;开始加载文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">doInBackground</span><span class="params">(String... params)</span> </span>&#123;</span><br><span class="line">        String file1 = params[<span class="number">0</span>];</span><br><span class="line">        String file2 = params[<span class="number">1</span>];</span><br><span class="line">        String file3 = params[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第一个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File1&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第二个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File2&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第三个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File3&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file3);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回文件加载结果。</span></span><br><span class="line">        <span class="keyword">return</span> isSuccess;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(String... values)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 提示用户当前在加载的是哪个文件。</span></span><br><span class="line">        String fileName = values[<span class="number">0</span>];</span><br><span class="line">        String message = <span class="string">&quot;正在加载文件：&quot;</span> + fileName;</span><br><span class="line">        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Boolean result)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务结束的时候根据不同的加载结果提示用户。</span></span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = result;</span><br><span class="line">        <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;成功加载所有文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;加载文件失败&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-执行异步任务"><a href="#1-2-执行异步任务" class="headerlink" title="1.2 执行异步任务"></a>1.2 执行异步任务</h2><p>继承 AsyncTask 创建异步加载文件的任务之后，接下来要做的就是执行这个异步任务了，AsyncTask 提供了两个执行异步任务的方法：</p>
+<ul>
+<li><p><strong>execute(Params…)</strong></p>
+<p>使用 AsyncTask 提供的线程池执行异步任务，并且指定若干个执行参数。</p>
+<blockquote>
+<p>关于 AsyncTask 的线程池我们会在后面详细说明。</p>
+</blockquote>
+</li>
+<li><p><strong>executeOnExecutor(Executor, Params…)</strong></p>
+<p>使用自己定义的线程池执行异步任务，并且指定若干个执行参数。</p>
+</li>
+</ul>
+<p>在这里我们就直接使用 AsyncTask 提供的线程池执行我们的文件加载任务，并且指定三个要加载的文件的路径作为执行参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String file1 = <span class="string">&quot;http://www.example.com/file1&quot;</span>;</span><br><span class="line">String file2 = <span class="string">&quot;http://www.example.com/file2&quot;</span>;</span><br><span class="line">String file3 = <span class="string">&quot;http://www.example.com/file3&quot;</span>;</span><br><span class="line">LoadFilesTask loadFilesTask = <span class="keyword">new</span> LoadFilesTask(mContext);<span class="comment">// 创建异步任务实例</span></span><br><span class="line">loadFilesTask.execute(file1, file2, file3);<span class="comment">// 执行异步任务</span></span><br></pre></td></tr></table></figure>
+
+<p>到此为止，我们的异步加载文件任务就开发完成了，可以说 AsyncTask 的使用方法还是很简单的。</p>
+<h1 id="2-版本变化"><a href="#2-版本变化" class="headerlink" title="2 版本变化"></a>2 版本变化</h1><p>AsyncTask 从引入到现在，经历了几次较大的改动，我们有必要了解这几次的改动以免在实际开发的时候踩坑：</p>
+<ul>
+<li><p><strong>Android 1.5</strong></p>
+<p>AsyncTask 作为一个异步任务工具类首次被引入 SDK，此时的 AsyncTask 只能按照串行的方式，一个接一个的执行每一个异步任务，也就是说无论你通过 AsyncTask 创建多少个异步任务，它们都会被加入队列中按顺序依次执行，如果某一个异步任务耗时很久，就会导致后面的任务一直无法被执行。</p>
+</li>
+<li><p><strong>Android 1.6 至 3.0（不包括 3.0）</strong></p>
+<p>AsyncTask 开始支持多线程并发的情况，其内部有一个全局共享的线程池，该线程池的最小线程数为 5，最大线程数为 128。也就是说现在你可以创建多个 AsyncTask 实例，并且让它们同时被执行了。</p>
+</li>
+<li><p><strong>Android 3.0 及以上</strong></p>
+<p>AsyncTask 又变成了默认情况下单线程串行方式依次执行每一个异步任务，Google 给出的理由是避免某些并发问题，具体问题估计要跟业务场景有关。如果你希望并行执行多个异步任务，可以通过 executeOnExecutor(Executor, Params…) 方法执行多线程的线程池。</p>
+</li>
+</ul>
+<h1 id="3-源码分析"><a href="#3-源码分析" class="headerlink" title="3 源码分析"></a>3 源码分析</h1><p>现在，是时候来看看 AsyncTask 的源码实现了，让我们从 execute(Params…) 方法开始吧，看看里面都干了啥：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MainThread</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; <span class="title">execute</span><span class="params">(Params... params)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 execute(Params…) 方法里面就一句话，调用 executeOnExecutor(Executor, Params…) 方法执行异步任务，并且指定了一个默认的线程池叫做 sDefaultExecutor，我们来看看这个线程池是什么样子的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Executor sDefaultExecutor = SERIAL_EXECUTOR;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor SERIAL_EXECUTOR = <span class="keyword">new</span> SerialExecutor();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 顺序执行异步任务的线程池。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SerialExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ArrayDeque&lt;Runnable&gt; mTasks = <span class="keyword">new</span> ArrayDeque&lt;Runnable&gt;();</span><br><span class="line">    Runnable mActive;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(<span class="keyword">final</span> Runnable r)</span> </span>&#123;</span><br><span class="line">        mTasks.offer(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    r.run();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    scheduleNext();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">if</span> (mActive == <span class="keyword">null</span>) &#123;</span><br><span class="line">            scheduleNext();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">scheduleNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ((mActive = mTasks.poll()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">          	<span class="comment">// 最终使用的是另一个线程池来执行异步任务，这个后面会解释。</span></span><br><span class="line">            THREAD_POOL_EXECUTOR.execute(mActive);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原来 sDefaultExecutor 指向的是 SerialExecutor，其内部使用了 ArrayDeque 按顺序存储要执行的异步任务，这些异步任务是按顺序依次被执行的，当前一个任务执行完毕之后，就从队列中取出下一个任务继续执行。也许你已经看到了 THREAD_POOL_EXECUTOR 这个线程池，发现 SerialExecutor 实际上只是一个异步任务的调度中心，最终执行任务的线程池是 THREAD_POOL_EXECUTOR，我们顺藤摸瓜继续往下看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = CPU_COUNT + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建 AsyncTask 线程时名称类似：AsyncTask #1</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadFactory sThreadFactory = <span class="keyword">new</span> ThreadFactory() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger mCount = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Thread(r, <span class="string">&quot;AsyncTask #&quot;</span> + mCount.getAndIncrement());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * An &#123;<span class="doctag">@link</span> Executor&#125; that can be used to execute tasks in parallel.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">        CORE_POOL_SIZE,</span><br><span class="line">        MAXIMUM_POOL_SIZE,</span><br><span class="line">        KEEP_ALIVE,</span><br><span class="line">        TimeUnit.SECONDS,</span><br><span class="line">        sPoolWorkQueue,</span><br><span class="line">        sThreadFactory);</span><br></pre></td></tr></table></figure>
+
+<p>从代码中可以看出 AsyncTask 内部使用的线程池就是 THREAD_POOL_EXECUTOR，我们要关注的是 CORE_POOL_SIZE、MAXIMUM_POOL_SIZE 和 sPoolWorkQueue 三个常量的定义：</p>
+<ul>
+<li>CORE_POOL_SIZE：AsyncTask 默认的线程池最小线程数是 CPU 数加 1</li>
+<li>MAXIMUM_POOL_SIZE：最大线程数是 CPU 数的两倍再加 1</li>
+<li>sPoolWorkQueue：线程池队列中最多允许 128 个异步任务</li>
+</ul>
+<p>所以，我们在使用 AsyncTask 的时候需要注意了，当我们直接使用 execute(Params…) 方法按顺序执行异步任务的时候，所有的任务都是按顺序依次执行的，如果某一个任务过于耗时，会导致后面任务都处于长时间等待状态；当我们使用 executeOnExecutor(Executor, Params…) 方法执行异步任务的时候，如果直接使用 AsyncTask 的 THREAD_POOL_EXECUTOR 作为并行执行异步任务的线程池时，它最多支持 MAXIMUM_POOL_SIZE 个异步任务并行执行，并且在极端情况下你最多添加 128 个异步任务，所以我们的建议是自己创建并行执行异步任务的线程池。</p>
+<p>讨论完 AsyncTask 的线程之后，我们来看看它的执行流程，我们从 executeOnExecutor(Executor, Params…) 方法看起：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MainThread</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; <span class="title">executeOnExecutor</span><span class="params">(Executor exec,</span></span></span><br><span class="line"><span class="function"><span class="params">        Params... params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mStatus != Status.PENDING) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (mStatus) &#123;</span><br><span class="line">            <span class="keyword">case</span> RUNNING:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;Cannot execute task:&quot;</span></span><br><span class="line">                        + <span class="string">&quot; the task is already running.&quot;</span>);</span><br><span class="line">            <span class="keyword">case</span> FINISHED:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;Cannot execute task:&quot;</span></span><br><span class="line">                        + <span class="string">&quot; the task has already been executed &quot;</span></span><br><span class="line">                        + <span class="string">&quot;(a task can be executed only once)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mStatus = Status.RUNNING;</span><br><span class="line"></span><br><span class="line">    onPreExecute();</span><br><span class="line"></span><br><span class="line">    mWorker.mParams = params;</span><br><span class="line">    exec.execute(mFuture);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们注意到如果你重复调用 AsyncTask 的 executeOnExecutor(Executor, Params…) 方法的话，系统会抛出异常告诉你这个 AsyncTask 已经被执行或者已经结束。当我们调用 executeOnExecutor(Executor, Params…) 方法的时候 onPreExecute() 回调就会被触发，之后就是调用线程池安排执行我们的异步任务。你应该注意到了 mWorker 和 mFuture 两个成员变量了吧？我们先来看下这两个是什么东西：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> WorkerRunnable&lt;Params, Result&gt; mWorker;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> FutureTask&lt;Result&gt; mFuture;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerRunnable</span>&lt;<span class="title">Params</span>, <span class="title">Result</span>&gt; <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Result</span>&gt; </span>&#123;</span><br><span class="line">    Params[] mParams;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很简单，mWorker 实际上就是 WorkerRunnable， 它实现了 Callable 接口，并且定义了和 AsyncTask 对应的 Params 和 Result 泛型，其内部还存储了用于执行异步任务的参数，而 mFuture 就是 FutureTask 了，用于监听异步任务执行结果，这两个成员变量应该说是 AsyncTask 的核心了，我们继续看下一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mWorker = <span class="keyword">new</span> WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Result <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            mTaskInvoked.set(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">          	<span class="comment">// 此处有坑，此处有坑，此处真的有坑，重要的事说三遍！</span></span><br><span class="line">            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            Result result = doInBackground(mParams);</span><br><span class="line">            Binder.flushPendingCommands();</span><br><span class="line">            <span class="keyword">return</span> postResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = <span class="keyword">new</span> FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;An error occurred while executing doInBackground()&quot;</span>,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很明显 mWorker 负责在其他线程中执行异步逻辑，也就是 doInBackground(Params…) 方法，并且在异步逻辑完成之后调用 postResult(Result) 方法执行 onPostExecute(Result)，mFuture 在 done() 回调方法中处理一些特殊的情况，例如异步任务还没有被执行就被取消。有一个地方需要特别注意的是执行异步逻辑的时候，调用了 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND) 方法设置当前的线程优先级为后台级别，这是一个深坑，在某些低端的单核手机上会出现主线程由于优先级较高而一直占用 CPU 资源导致 AsyncTask 的异步任务一直无法被执行的情况。</p>
+<p>最后，我们看看 AsyncTask 是如何处理 onPostExecute(Reuslt) 和 onProgressUpdate(Progress…) 的，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Result <span class="title">postResult</span><span class="params">(Result result)</span> </span>&#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,</span><br><span class="line">            <span class="keyword">new</span> AsyncTaskResult&lt;Result&gt;(<span class="keyword">this</span>, result));</span><br><span class="line">    message.sendToTarget();</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">publishProgress</span><span class="params">(Progress... values)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!isCancelled()) &#123;</span><br><span class="line">        getHandler().obtainMessage(MESSAGE_POST_PROGRESS,</span><br><span class="line">                <span class="keyword">new</span> AsyncTaskResult&lt;Progress&gt;(<span class="keyword">this</span>, values)).sendToTarget();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">finish</span><span class="params">(Result result)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isCancelled()) &#123;</span><br><span class="line">        onCancelled(result);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        onPostExecute(result);</span><br><span class="line">    &#125;</span><br><span class="line">    mStatus = Status.FINISHED;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InternalHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InternalHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.getMainLooper());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;&#125;)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> MESSAGE_POST_RESULT:</span><br><span class="line">                <span class="comment">// There is only one result</span></span><br><span class="line">                result.mTask.finish(result.mData[<span class="number">0</span>]);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MESSAGE_POST_PROGRESS:</span><br><span class="line">                result.mTask.onProgressUpdate(result.mData);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实原理很简单就是利用 Handler 将数据发送到主线程执行。</p>
+<h1 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4 注意事项"></a>4 注意事项</h1><p>最后我们总结下使用 AsyncTask 需要注意的事项：</p>
+<ul>
+<li>Android 1.6 至 3.0（不包括 3.0）的 AsyncTask 是支持并行执行异步任务的，其他版本都是按顺序依次执行异步任务。</li>
+<li>如果你希望并行执行异步任务，建议你创建自己的线程池，通过 executeOnExecutor(Executor, Params…) 方法执行异步任务，尽量不用使用 AsyncTask 提供的默认线程池。</li>
+<li>AsyncTask 的异步线程优先级是 Process.THREAD_PRIORITY_BACKGROUND，在某些低端的单核手机上会出现主线程由于优先级较高而一直占用 CPU 资源导致 AsyncTask 的异步任务一直无法被执行的情况。</li>
+</ul>
+<p>AsyncTask 虽然好用，但是请以正确的姿势使用，避免出现预想不到的问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daryl</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daryl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

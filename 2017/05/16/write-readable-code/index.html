@@ -1,8 +1,228 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>如何提高代码的可读性 | 学海无涯</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">如何提高代码的可读性</h1><a id="logo" href="/.">学海无涯</a><p class="description">吾生有岸，而知无涯。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">如何提高代码的可读性</h1><div class="post-meta">2017-05-16<span> | </span><span class="category"><a href="/categories/Android/">Android</a></span></div><div class="post-content"><p>“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"darylgo.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：  代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。 代码也是公司的一笔特殊财富，因为它不可能永远被同一个程序员维护，如果代码的可读性很差的话，很可能导致这笔财">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何提高代码的可读性">
+<meta property="og:url" content="http://darylgo.github.io/2017/05/16/write-readable-code/index.html">
+<meta property="og:site_name" content="学海无涯">
+<meta property="og:description" content="“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：  代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。 代码也是公司的一笔特殊财富，因为它不可能永远被同一个程序员维护，如果代码的可读性很差的话，很可能导致这笔财">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://darylgo.github.io/2017/05/16/write-readable-code/nullable.png">
+<meta property="og:image" content="http://darylgo.github.io/2017/05/16/write-readable-code/nonnull.png">
+<meta property="og:image" content="http://darylgo.github.io/2017/05/16/write-readable-code/preview-in-edit-mode.png">
+<meta property="article:published_time" content="2017-05-16T14:43:28.000Z">
+<meta property="article:modified_time" content="2021-01-06T13:57:01.031Z">
+<meta property="article:author" content="Daryl">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://darylgo.github.io/2017/05/16/write-readable-code/nullable.png">
+
+<link rel="canonical" href="http://darylgo.github.io/2017/05/16/write-readable-code/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何提高代码的可读性 | 学海无涯</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">学海无涯</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吾生有岸，而知无涯。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2017/05/16/write-readable-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何提高代码的可读性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-16 22:43:28" itemprop="dateCreated datePublished" datetime="2017-05-16T22:43:28+08:00">2017-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:57:01" itemprop="dateModified" datetime="2021-01-06T21:57:01+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>“任何一个傻瓜都能写出计算机可以理解的代码，唯有写出人类容易理解的代码，才是优秀的程序员。”，这句话出自《重构》这本书，我个人很赞同这句话，原因如下：</p>
 <ul>
-<li> 代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。</li>
-<li> 代码也是公司的一笔特殊财富，因为它不可能永远被同一个程序员维护，如果代码的可读性很差的话，很可能导致这笔财富无法传承下来，前功尽弃。</li>
-<li> 具有良好可读性的代码能让功能的扩展和BUG的修复更顺利，这一点应该很容易理解，增加新功能、修改某个BUG都需要你首先理解代码。</li>
+<li>代码不仅仅是人类和计算机沟通的语言，它也是建立在程序员之间的桥梁，两个程序员在沟通的时候，任何富有表达力的言语都不如直接阅读对方一段代码。</li>
+<li>代码也是公司的一笔特殊财富，因为它不可能永远被同一个程序员维护，如果代码的可读性很差的话，很可能导致这笔财富无法传承下来，前功尽弃。</li>
+<li>具有良好可读性的代码能让功能的扩展和 BUG 的修复更顺利，这一点应该很容易理解，增加新功能、修改某个 BUG 都需要你首先理解代码。</li>
 </ul>
 <p>所以，提高代码可读性是很有必要的，本文将介绍个人在实践中认为能够提高代码可读性的方法，希望对大家有所帮助。</p>
 <h1 id="1-重视代码规范"><a href="#1-重视代码规范" class="headerlink" title="1 重视代码规范"></a>1 重视代码规范</h1><p>重视代码规范是提高代码可读性最基本和最简单的方式，每一门语言，每一个公司或组织都会有自己的代码规范，制定这些规范的目的就是为了让大家能够更容易阅读和理解代码。例如当我们看到某一个变量名称前面带有 <code>m</code> 前缀时，我们就知道它是一个成员变量（member）；当我们看到某个方法以 <code>on</code> 开头时，我们就知道它是一个回调方法；当我们看到某个变量是由大写字母和下划线组成时，我们就知道它是一个静态常量。诸如此类的规范有很多，只要我们遵循规范，我们的代码可读性起码会有一个最低的保障。</p>
@@ -14,27 +234,27 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置用户的年龄，另外你可以通过 &#123;<span class="doctag">@link</span> #getAge()&#125; 方法获取用户的年龄。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> age 任意数值的用户年龄</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #getAge()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="4-使用注解"><a href="#4-使用注解" class="headerlink" title="4 使用注解"></a>4 使用注解</h1><p>注解可以用于替换一些简短的注释描述，并且提高变量、方法和类的可读性，最典型的例子就是 <code>@Override</code> 注解，它告诉我们被注解的方法是对父类或者接口方法的重写或实现，相比于注释“这是一个重写方法”，注解 <code>@Override</code> 要更简单快捷得多。例如下面的代码我们实现了 <code>OnClickListener</code> 接口的 <code>onClick(View view)</code> 方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListener</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 实现 onClick 方法。</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListener</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 实现 onClick 方法。</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>大多数人只会使用一些现有的注解，而很少自己创建注解，其实我们可以自己创建一些有用的注解来提高代码的可读性，下面我们以 <a target="_blank" rel="noopener" href="https://github.com/greenrobot/EventBus">EventBus</a> 为例，说明自定义注解是如何提高代码可读性的。</p>
 <p>EventBus 是一个应用在 Android 上的事件总线，我们可以使用它在任意地方发布事件，并且在任意地方注册并接收事件。EventBus 有三个弊端，一是我们经常搞不清楚某一个事件是来自哪里的，因为任何地方都可以发送同一个事件；二是我们同样也经常搞不清楚某个事件会在哪些地方被接收，因为任何地方都可以注册并接收事件；三是早期的 EventBus 事件接收方法要求你必须以 <code>onEventXXXX</code> 的方式命名，这样的命名其实和普通方法并没有太大的区别，我们需要一种方式让它更加凸显，以防它被误以为是普通方法而被删除。这时候我们可以利用注解让事件接收方法一眼就被认出来，并且还能看出有哪些地方会发出该事件，哪些地方会接收到我们发出的事件：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EventBus 事件注解，用于标识某个方法是 EventBus 方法，并且注明事件</span></span><br><span class="line"><span class="comment"> * 的接收方或发送方。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.SOURCE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Event &#123;</span><br><span class="line">    Class[] from() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">    Class[] to() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>现在我们假设 A 和 B 都可以发送一个名叫 <code>MyEvent</code> 的事件到 C 和 D，我们可以这样写：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(to = &#123;C.class, D.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EventBus.getDefault().post(<span class="keyword">new</span> MyEvent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">D</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">D</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Event(from = &#123;A.class, B.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(MyEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>从上面的代码，我们通过 <code>@Event</code> 注解一眼就认出来 EventBus 方法，并且还能知道 A 将事件发送到了 C 和 D，而 C 接收到的事件可能来自 A 或 B。</p>
 <h1 id="5-多用-Nullable，慎用-NonNull"><a href="#5-多用-Nullable，慎用-NonNull" class="headerlink" title="5 多用 @Nullable，慎用 @NonNull"></a>5 多用 @Nullable，慎用 @NonNull</h1><p>【@Nullable】是一个用于标注某个变量、参数或方法返回值可能为空指针的注解，当我们看到该注解的时候就要小心了，它意味着如果我们不做判空处理的话，很可能出现空指针异常，并且在 Android Studio 上会以黄色背景警告我们。那么什么时候该使用该注解呢？我的原则只要某个变量、参数或方法返回值有一丝可能性为空，就使用该注解，这起码可以避免空指针异常的出现。</p>
 <img src="/2017/05/16/write-readable-code/nullable.png" class="">
 
 <hr>
-<p>【@NonNull】是一个用于标注某个变量、参数和方法返回值不可能为空指针的注解，当我们看到该注解的时候，就可以认为被标记的变量、参数或方法返回值不可能为空，无需做判空处理，同时 Android Studio 也会在你进行判空处理的时候提醒你没有必要这样做。对于这个注解，我个人的原则是除非100%肯定不会空指针，否则绝对不用。</p>
+<p>【@NonNull】是一个用于标注某个变量、参数和方法返回值不可能为空指针的注解，当我们看到该注解的时候，就可以认为被标记的变量、参数或方法返回值不可能为空，无需做判空处理，同时 Android Studio 也会在你进行判空处理的时候提醒你没有必要这样做。对于这个注解，我个人的原则是除非 100%肯定不会空指针，否则绝对不用。</p>
 <img src="/2017/05/16/write-readable-code/nonnull.png" class="">
 
 <h1 id="6-使用-MainThread-和-WorkerThread"><a href="#6-使用-MainThread-和-WorkerThread" class="headerlink" title="6 使用 @MainThread 和 @WorkerThread"></a>6 使用 @MainThread 和 @WorkerThread</h1><p>【@MainThread】是一个用于标注某个类或方法必须在主线程中使用的注解，当我们看到该注解的时候，就要注意当前的操作是否处于主线程，否则很有可能出错。例如我们有个方法用于更新 <code>TextView</code> 的内容，因为涉及到 UI 的更新操作，必须在主线程进行，所以我们可以这么写：</p>
@@ -44,7 +264,7 @@
 <p>【@WorkerThread】是一个用于标注某个类或方法必须在子线程中使用的注解，常见的情况就是不适合在主线程中进行的耗时操作，当我们看到该注解的时候，应该创建一个子线程去使用被注解的类或方法。例如我们有个方法用于将 <code>Bitmap</code> 保存到 SD 卡中，涉及到 I/O 的操作理应在子线程中进行，所以我们可以这么写：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveImage</span><span class="params">(Bitmap image, String path)</span> throw IOException </span>&#123;</span><br><span class="line">    FileOutputStream outputStream = <span class="keyword">new</span> FileOutputStream(path);</span><br><span class="line">    image.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, outputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="7-使用-return-减少-if-嵌套"><a href="#7-使用-return-减少-if-嵌套" class="headerlink" title="7 使用 return 减少 if 嵌套"></a>7 使用 return 减少 if 嵌套</h1><p>当我们的方法中有一系列业务逻辑是按顺序执行，并且每一个业务逻辑的执行前提是前一个业务逻辑执行成功时，我们可以考虑使用 <code>return</code> 关键字在业务逻辑执行失败时终止整个方法，而不是嵌套多层的 <code>if</code>。例如，我们有一个返回只为 <code>boolean</code> 类型的方法，它只有在方法内的所有业务逻辑都按顺序执行成功之后才返回 <code>true</code>： </p>
+<h1 id="7-使用-return-减少-if-嵌套"><a href="#7-使用-return-减少-if-嵌套" class="headerlink" title="7 使用 return 减少 if 嵌套"></a>7 使用 return 减少 if 嵌套</h1><p>当我们的方法中有一系列业务逻辑是按顺序执行，并且每一个业务逻辑的执行前提是前一个业务逻辑执行成功时，我们可以考虑使用 <code>return</code> 关键字在业务逻辑执行失败时终止整个方法，而不是嵌套多层的 <code>if</code>。例如，我们有一个返回只为 <code>boolean</code> 类型的方法，它只有在方法内的所有业务逻辑都按顺序执行成功之后才返回 <code>true</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> isSuccess;</span><br><span class="line">    isSuccess = doSomething1();</span><br><span class="line">    <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">        isSuccess = doSomething2();</span><br><span class="line">        <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">            isSuccess = doSomething3();</span><br><span class="line">            <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">                isSuccess = doSomething4();</span><br><span class="line">                <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">                    isSuccess = doSomething5();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> isSuccess;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>对于这种多重 <code>if</code> 嵌套的代码，我们可以在某个业务逻辑执行失败的时候 <code>return false</code> 来终止整个方法，这样做的好处是让人一看就知道里面的逻辑是从上到下按顺序执行的，更容易理解，具体写法如下：</p>
@@ -79,13 +299,13 @@
 <p><strong>3 Mockito 打桩方法</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">when(person.getAge()).thenReturn(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
 
-<p>Mockito 是一个用于单元测试的框架，这里我们不探究它的用法，我们要看的是它的方法调用形式。上面的代码同样可以拆解成<strong>“when person.getAge() then return 20”</strong>，意思就是<strong>“当调用person.getAge()方法的时候，返回20”</strong>。</p>
+<p>Mockito 是一个用于单元测试的框架，这里我们不探究它的用法，我们要看的是它的方法调用形式。上面的代码同样可以拆解成<strong>“when person.getAge() then return 20”</strong>，意思就是<strong>“当调用 person.getAge()方法的时候，返回 20”</strong>。</p>
 <h1 id="10-使用-Builder-代替构造方法"><a href="#10-使用-Builder-代替构造方法" class="headerlink" title="10 使用 Builder 代替构造方法"></a>10 使用 Builder 代替构造方法</h1><p>当某个类的构造方法有很多个参数或者有很多个重载版本时，我们应该考虑为这个类写一个 Builder，通过这个 Builder 创建配置并创建该类的实例。</p>
 <p>假设我们有个类用来代表一个矩形，它的名字叫做 Rectangle，它的代码如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123; ... &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123; ... &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> stroke)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> stroke)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>于是我们就可能看见这样的代码 <code>new Rectangle(1, 1, 1, 1)</code>，这样的代码可读性是很差的，因为我们无法一眼就看出这个矩形设置了哪些信息，还需要去查阅下相关的 API 文档。此外，当我们需要创建一个只需指定 <code>id</code> 和 <code>stroke</code> 的矩形的时候，我们就必须再写一个新的构造方法，当一个对象的属性较多的时候，构造方法的重载版本就可能变得非常的多，维护成本也随之提高。如果我们为 Rectangle 创建一个 Builder，通过 Builder 创建矩形实例的过程就会变得灵活而清晰很多：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Rectangle</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">        mId = builder.id;</span><br><span class="line">        mWidth = builder.width;</span><br><span class="line">        mHeight = builder.height;</span><br><span class="line">        mStroke = builder.stroke;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> height;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> stroke;<span class="comment">// 边框宽度</span></span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Builder</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> Rectangle <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Rectangle(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">width</span><span class="params">(<span class="keyword">int</span> width)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.width = width;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">height</span><span class="params">(<span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.height = height;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">stroke</span><span class="params">(<span class="keyword">int</span> stroke)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.stroke = stroke;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mStroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Rectangle</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">        mId = builder.id;</span><br><span class="line">        mWidth = builder.width;</span><br><span class="line">        mHeight = builder.height;</span><br><span class="line">        mStroke = builder.stroke;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> height;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> stroke;<span class="comment">// 边框宽度</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Builder</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Rectangle <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Rectangle(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">width</span><span class="params">(<span class="keyword">int</span> width)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.width = width;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">height</span><span class="params">(<span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.height = height;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">stroke</span><span class="params">(<span class="keyword">int</span> stroke)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.stroke = stroke;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>现在，我们创建 Rectangle 实例的过程就会变成下面的样子，它不仅让我们一眼就看出矩形设置了哪些属性，而且我们还可以自由组合这些属性，达到重载构造方法想要的结果：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Rectangle.Builder builder1 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">1</span>);</span><br><span class="line">Rectangle rect1 = builder1.width(<span class="number">1</span>).height(<span class="number">1</span>).stroke(<span class="number">1</span>).build();</span><br><span class="line"></span><br><span class="line">Rectangle.Builder builder2 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">2</span>);</span><br><span class="line">Rectangle rect2 = builder2.width(<span class="number">1</span>).height(<span class="number">1</span>).build();</span><br><span class="line"></span><br><span class="line">Rectangle.Builder builder3 = <span class="keyword">new</span> Rectangle.Builder(<span class="number">3</span>);</span><br><span class="line">Rectangle rect3 = builder3.stroke(<span class="number">1</span>).build();</span><br></pre></td></tr></table></figure>
@@ -105,7 +325,7 @@
 </ul>
 <p>关于更多 tools 的用法，大家可以到网上查找。</p>
 <h1 id="12-使用-isInEditMode-优化布局预览"><a href="#12-使用-isInEditMode-优化布局预览" class="headerlink" title="12 使用 isInEditMode() 优化布局预览"></a>12 使用 isInEditMode() 优化布局预览</h1><p><code>isInEditMode()</code> 方法是用于判断 View 当前是否处于 IDE 布局编辑（预览）状态，只有在编辑状态下才会返回 <code>true</code>，当我们编写只有在运行时才能看到绘制效果的自定义 View 的时候，可以使用 <code>isInEditMode()</code> 方法让 View 在布局预览的时候就看到运行时的大概样子。例如我们通过 View 实现一个圆形不断放大缩小的动画时，正常情况我们只有在程序运行的时候才能看到动画效果，在布局预览的时候是空白一片的，我们可以通过 <code>isInEditMode()</code> 方法在编辑的时候先绘制一个圆形，让开发者大概知道这个动画 View 会是什么样子，虽然它是静止的，但是也好过一片空白：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimationView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isInEditMode()) &#123;</span><br><span class="line">            <span class="comment">// 编辑状态下绘制一个圆形，让开发者大概知道圆形的大小。</span></span><br><span class="line">            canvas.drawCircle(centerX, centerY, radius, paint);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 运行时刷新画面。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimationView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isInEditMode()) &#123;</span><br><span class="line">            <span class="comment">// 编辑状态下绘制一个圆形，让开发者大概知道圆形的大小。</span></span><br><span class="line">            canvas.drawCircle(centerX, centerY, radius, paint);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 运行时刷新画面。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我们在布局预览的时候就会看到一个圆形被绘制出来，并且在程序正在运行的时候不会绘制该圆形：</p>
 <img src="/2017/05/16/write-readable-code/preview-in-edit-mode.png" class="">
@@ -115,13 +335,203 @@
 </blockquote>
 <h1 id="13-使用内部类对代码进行分类"><a href="#13-使用内部类对代码进行分类" class="headerlink" title="13 使用内部类对代码进行分类"></a>13 使用内部类对代码进行分类</h1><p>内部类有些时候可以起到类似包的代码分类功能，通过内部类对某个类内部的代码进行功能划分，可以让与该类相关的代码更具有可读性。</p>
 <p>例如我们有个日志打印工具类，里面有两种类型的方法，一种是打印用户可见的日志，另一种则是打印只有开发者可见的日志，我们可以这样写：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 用户可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 开发者可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Developer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用户可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开发者可见的日志。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Developer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 打印日志</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我们在调用日志打印方法时通过内部类的名称一眼就可以看出当前打印的日志是用户可见还是开发者可见的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Logger.User.d(TAG, <span class="string">&quot;打印用户可见的日志&quot;</span>);</span><br><span class="line">Logger.Developer.d(TAG, <span class="string">&quot;打印开发者可见的日志&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>类似的，我们也可以使用内部类对常量进行分类，例如我们有一个多媒体数据库叫 MediaStore，其内部分为图像数据表和视频数据表，每个表都有自己的字段，我们需要定义常量来对应这些字段，所以可以这样写：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaStore</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 图像数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;image_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;image_path&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 视频数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;video_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;video_path&quot;</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaStore</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 图像数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;image_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;image_path&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 视频数据表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoTable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">&quot;video_name&quot;</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PATH = <span class="string">&quot;video_path&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我们在需要使用这些常量的时候就可以通过内部类区分不同类型的常量了：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MediaStore.ImageTable.NAME<span class="comment">// 图像名称字段</span></span><br><span class="line">MediaStore.VideoTable.NAME<span class="comment">// 视频名称字段</span></span><br></pre></td></tr></table></figure></div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a><a class="next" href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://darylgo.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/camera2-tutorial-chapter1/">Android Camera2 教程 · 第一章 · 概览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/camera1-tutorial-chapter1/">Android Camera1 教程 · 第一章 · 开启相机</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">学海无涯.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MediaStore.ImageTable.NAME<span class="comment">// 图像名称字段</span></span><br><span class="line">MediaStore.VideoTable.NAME<span class="comment">// 视频名称字段</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/10/android-async-task/" rel="prev" title="深入理解 AsyncTask">
+      <i class="fa fa-chevron-left"></i> 深入理解 AsyncTask
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/10/why-kotlin/" rel="next" title="为什么使用 Kotlin">
+      为什么使用 Kotlin <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%87%8D%E8%A7%86%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="nav-text">1 重视代码规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%A4%9A%E5%86%99%E6%B3%A8%E9%87%8A"><span class="nav-text">2 多写注释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%87%8D%E5%86%99%E6%B3%A8%E9%87%8A"><span class="nav-text">3 重写注释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="nav-text">4 使用注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%A4%9A%E7%94%A8-Nullable%EF%BC%8C%E6%85%8E%E7%94%A8-NonNull"><span class="nav-text">5 多用 @Nullable，慎用 @NonNull</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8-MainThread-%E5%92%8C-WorkerThread"><span class="nav-text">6 使用 @MainThread 和 @WorkerThread</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8-return-%E5%87%8F%E5%B0%91-if-%E5%B5%8C%E5%A5%97"><span class="nav-text">7 使用 return 减少 if 嵌套</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E4%BD%BF%E7%94%A8-Map-%E4%BB%A3%E6%9B%BF%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5"><span class="nav-text">8 使用 Map 代替分支语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E7%9A%84%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-text">9 方法调用的语法糖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-%E4%BD%BF%E7%94%A8-Builder-%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-text">10 使用 Builder 代替构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E4%BD%BF%E7%94%A8-tools-%E4%BC%98%E5%8C%96%E5%B8%83%E5%B1%80%E9%A2%84%E8%A7%88"><span class="nav-text">11 使用 tools 优化布局预览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-%E4%BD%BF%E7%94%A8-isInEditMode-%E4%BC%98%E5%8C%96%E5%B8%83%E5%B1%80%E9%A2%84%E8%A7%88"><span class="nav-text">12 使用 isInEditMode() 优化布局预览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-%E4%BD%BF%E7%94%A8%E5%86%85%E9%83%A8%E7%B1%BB%E5%AF%B9%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E5%88%86%E7%B1%BB"><span class="nav-text">13 使用内部类对代码进行分类</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daryl</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daryl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

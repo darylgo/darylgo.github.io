@@ -1,4 +1,220 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Android Camera1 教程 · 第一章 · 开启相机 | 学海无涯</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Android Camera1 教程 · 第一章 · 开启相机</h1><a id="logo" href="/.">学海无涯</a><p class="description">吾生有岸，而知无涯。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Android Camera1 教程 · 第一章 · 开启相机</h1><div class="post-meta">2018-11-08<span> | </span><span class="category"><a href="/categories/Android/">Android</a></span></div><div class="post-content"><blockquote>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"darylgo.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本教程已经停更，《Camera2 教程》持续更新中。  从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。 本文所使用的相机 API 是 android.hardware.Camera，至于 Camera2 的知识我打算另外写。我会开发一个具有完整相机功能的应用程序，并且将相机知识分成多个篇章进行介绍，而本章所要介绍的就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Camera1 教程 · 第一章 · 开启相机">
+<meta property="og:url" content="http://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/index.html">
+<meta property="og:site_name" content="学海无涯">
+<meta property="og:description" content="本教程已经停更，《Camera2 教程》持续更新中。  从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。 本文所使用的相机 API 是 android.hardware.Camera，至于 Camera2 的知识我打算另外写。我会开发一个具有完整相机功能的应用程序，并且将相机知识分成多个篇章进行介绍，而本章所要介绍的就">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-08T15:12:06.000Z">
+<meta property="article:modified_time" content="2021-01-06T13:54:34.275Z">
+<meta property="article:author" content="Daryl">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android Camera1 教程 · 第一章 · 开启相机 | 学海无涯</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">学海无涯</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吾生有岸，而知无涯。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2018/11/08/camera1-tutorial-chapter1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android Camera1 教程 · 第一章 · 开启相机
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-08 23:12:06" itemprop="dateCreated datePublished" datetime="2018-11-08T23:12:06+08:00">2018-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:54:34" itemprop="dateModified" datetime="2021-01-06T21:54:34+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
 <p>本教程已经停更，<a href="https://darylgo.github.io/2019/01/22/camera2-tutorial-chapter1/">《Camera2 教程》</a>持续更新中。</p>
 </blockquote>
 <p>从事相机的开发已经三年多了，这两年来积累了很多相机相关的开发经验，所以想做个总结，同时也希望对那些想了解这块知识的人有所帮助。</p>
@@ -11,7 +227,7 @@
 <li>如何开启摄像头</li>
 <li>如何关闭摄像头</li>
 </ol>
-<p>你可以在 <a target="_blank" rel="noopener" href="https://github.com/darylgo/Camera1Sample">https://github.com/darylgo/Camera1Sample</a> 下载相关的源码。</p>
+<p>你可以在 <a target="_blank" rel="noopener" href="https://github.com/darylgo/Camera1Sample">https://github.com/darylgo/Camera1Sample</a> 下载相关的源码。</p>
 <h1 id="1-创建相机项目"><a href="#1-创建相机项目" class="headerlink" title="1 创建相机项目"></a>1 创建相机项目</h1><p>正如前所说的，我会开发一个具有完整相机功能的应用程序，所以第一步要做的就是创建一个相机项目，这里我用 AS 创建了一个叫 Camera1Sample 的项目，并且有一个 Activity 叫 MainActivity。</p>
 <p>为了降低源码的阅读难度，我不打算引入任何的第三方库，不去关注性能问题，也不进行任何模式上的设计，大部分的代码我都会写在这个 MainActivity 里面，所有的功能的实现都尽可能简化，让阅读者可以只关注重点。</p>
 <h1 id="2-注册相关权限"><a href="#2-注册相关权限" class="headerlink" title="2 注册相关权限"></a>2 注册相关权限</h1><p>在使用相机 API 之前，必须在 AndroidManifest.xml 注册相机权限 android.permission.CAMERA，声明我们开发的应用程序需要相机权限，另外如果你有保存照片的操作，那么读写 SD 卡的权限也是必须的：</p>
@@ -30,13 +246,13 @@
 <h1 id="5-根据-ID-获取-CameraInfo"><a href="#5-根据-ID-获取-CameraInfo" class="headerlink" title="5 根据 ID 获取 CameraInfo"></a>5 根据 ID 获取 CameraInfo</h1><p>Camera.CameraInfo 正如其名，里面存储了几个相机相关的信息，信息并不多：</p>
 <ul>
 <li><p><strong>facing</strong></p>
-<p>摄像头的方向，可选值有 Camera.CameraInfo.CAMERA_FACING_BACK 和Camera.CameraInfo.CAMERA_FACING_FRONT。</p>
+<p>摄像头的方向，可选值有 Camera.CameraInfo.CAMERA_FACING_BACK 和 Camera.CameraInfo.CAMERA_FACING_FRONT。</p>
 </li>
 <li><p><strong>orientation</strong></p>
 <p>摄像头的画面经过顺时针旋转多少度之后是正常画面，这个属性比较难以理解，我们在后面会专门解释。</p>
 </li>
 <li><p><strong>canDisableShutterSound</strong></p>
-<p>是否支持静音拍照，也就是说在用户拍照的时候是否会“咔嚓”一声，例如在日本由于隐私政策，所有手机都是不允许静音拍照的，那么该字段就会返回 false。该字段一般配合 Camera.enableShutterSound(boolean) 使用，当它返回 false 的时候，即使你调用  Camera.enableShutterSound(false)，相机在拍照的时候也会发出声音。</p>
+<p>是否支持静音拍照，也就是说在用户拍照的时候是否会“咔嚓”一声，例如在日本由于隐私政策，所有手机都是不允许静音拍照的，那么该字段就会返回 false。该字段一般配合 Camera.enableShutterSound(boolean) 使用，当它返回 false 的时候，即使你调用 Camera.enableShutterSound(false)，相机在拍照的时候也会发出声音。</p>
 </li>
 </ul>
 <p>好了，Camera.CameraInfo 其实就这么几个字段，最重要的就是 facing 和 orientation 了，我们可以通过 facing 判断摄像头是前置还是后置，通过 orientation 值取校正摄像头的画面。接下来，我们看下如何获取 Camera.CameraInfo 实例：</p>
@@ -49,8 +265,197 @@
 <h1 id="6-开启相机"><a href="#6-开启相机" class="headerlink" title="6 开启相机"></a>6 开启相机</h1><p>接下来我们要做的就是调用 Camera.open(int) 方法开启相机了，需要注意的是你必须确保在开启相机之前已经被授予了相机权限，否则会抛权限异常。一个比较稳妥的做法就是每次开启相机之前检查相机权限。下面是主要代码前段：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 开启指定摄像头</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">openCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;相机已经被开启，无法同时开启多个相机实例！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">        <span class="keyword">if</span> (hasFrontCamera()) &#123;</span><br><span class="line">            <span class="comment">// 优先开启前置摄像头</span></span><br><span class="line">            mCamera = Camera.open(mFrontCameraId);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasBackCamera()) &#123;</span><br><span class="line">            <span class="comment">// 没有前置，就尝试开启后置摄像头</span></span><br><span class="line">            mCamera = Camera.open(mBackCameraId);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;没有任何相机可以开启！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="7-关闭相机"><a href="#7-关闭相机" class="headerlink" title="7 关闭相机"></a>7 关闭相机</h1><p>和其他硬件资源的使用一样，当我们不再需要使用相机时记得调用 Camera.release() 方法及时关闭相机回收资源。关闭相机的操作至关重要，因为如果你一直占用相机资源，其他基于相机开发的功能都会无法正常使用，严重情况下直接导致其他相机相关的 APP 无法正常使用。那么在什么时候关闭相机最合适呢？我个人的建议是在 onPause() 的时候就一定要关闭相机，因为在这个时候相机页面已经不是用户关注的焦点，大部分情况下已经可以关闭相机了。</p>
+<h1 id="7-关闭相机"><a href="#7-关闭相机" class="headerlink" title="7 关闭相机"></a>7 关闭相机</h1><p>和其他硬件资源的使用一样，当我们不再需要使用相机时记得调用 Camera.release() 方法及时关闭相机回收资源。关闭相机的操作至关重要，因为如果你一直占用相机资源，其他基于相机开发的功能都会无法正常使用，严重情况下直接导致其他相机相关的 APP 无法正常使用。那么在什么时候关闭相机最合适呢？我个人的建议是在  onPause()  的时候就一定要关闭相机，因为在这个时候相机页面已经不是用户关注的焦点，大部分情况下已经可以关闭相机了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onPause();</span><br><span class="line">    closeCamera();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 关闭相机。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">closeCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mCamera.release();</span><br><span class="line">        mCamera = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>至此，我们关于开启相机的教程就结束了，下一章我们会介绍如何开启预览。</p>
-</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a><a class="next" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://darylgo.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/camera2-tutorial-chapter1/">Android Camera2 教程 · 第一章 · 概览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/camera1-tutorial-chapter1/">Android Camera1 教程 · 第一章 · 开启相机</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">学海无涯.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/10/why-kotlin/" rel="prev" title="为什么使用 Kotlin">
+      <i class="fa fa-chevron-left"></i> 为什么使用 Kotlin
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/09/camera1-tutorial-chapter2/" rel="next" title="Android Camera1 教程 · 第二章 · 预览">
+      Android Camera1 教程 · 第二章 · 预览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E7%9B%B8%E6%9C%BA%E9%A1%B9%E7%9B%AE"><span class="nav-text">1 创建相机项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B3%A8%E5%86%8C%E7%9B%B8%E5%85%B3%E6%9D%83%E9%99%90"><span class="nav-text">2 注册相关权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E7%9B%B8%E6%9C%BA%E7%89%B9%E6%80%A7%E8%A6%81%E6%B1%82"><span class="nav-text">3 配置相机特性要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E8%8E%B7%E5%8F%96%E6%91%84%E5%83%8F%E5%A4%B4%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-text">4 获取摄像头的个数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%A0%B9%E6%8D%AE-ID-%E8%8E%B7%E5%8F%96-CameraInfo"><span class="nav-text">5 根据 ID 获取 CameraInfo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%BC%80%E5%90%AF%E7%9B%B8%E6%9C%BA"><span class="nav-text">6 开启相机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%85%B3%E9%97%AD%E7%9B%B8%E6%9C%BA"><span class="nav-text">7 关闭相机</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daryl</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daryl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

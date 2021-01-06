@@ -1,4 +1,220 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>深入理解 AsyncTask | 学海无涯</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">深入理解 AsyncTask</h1><a id="logo" href="/.">学海无涯</a><p class="description">吾生有岸，而知无涯。</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">深入理解 AsyncTask</h1><div class="post-meta">2017-04-10<span> | </span><span class="category"><a href="/categories/Android/">Android</a></span></div><div class="post-content"><p>AsyncTask 是一个简单实用的多线程异步任务工具类。</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"darylgo.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="AsyncTask 是一个简单实用的多线程异步任务工具类。 Android 开发中经常遇到需要将耗时的操作放到子线程中进行异步执行，等执行完毕之后再通知主线程更新 UI 的情况，例如异步加载网络图片、异步读取文件等，如果在主线程中执行这些耗时操作，就会造成卡顿的情况，甚至是 ANR。开启一个线程处理耗时任务很简单，创建一个 Thread 对象，在 run() 方法中去执行耗时操作即可，但是当耗时任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解 AsyncTask">
+<meta property="og:url" content="http://darylgo.github.io/2017/04/10/android-async-task/index.html">
+<meta property="og:site_name" content="学海无涯">
+<meta property="og:description" content="AsyncTask 是一个简单实用的多线程异步任务工具类。 Android 开发中经常遇到需要将耗时的操作放到子线程中进行异步执行，等执行完毕之后再通知主线程更新 UI 的情况，例如异步加载网络图片、异步读取文件等，如果在主线程中执行这些耗时操作，就会造成卡顿的情况，甚至是 ANR。开启一个线程处理耗时任务很简单，创建一个 Thread 对象，在 run() 方法中去执行耗时操作即可，但是当耗时任">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-04-10T02:57:00.000Z">
+<meta property="article:modified_time" content="2021-01-06T13:56:03.139Z">
+<meta property="article:author" content="Daryl">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://darylgo.github.io/2017/04/10/android-async-task/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>深入理解 AsyncTask | 学海无涯</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">学海无涯</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吾生有岸，而知无涯。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://darylgo.github.io/2017/04/10/android-async-task/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daryl">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学海无涯">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深入理解 AsyncTask
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-10 10:57:00" itemprop="dateCreated datePublished" datetime="2017-04-10T10:57:00+08:00">2017-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-06 21:56:03" itemprop="dateModified" datetime="2021-01-06T21:56:03+08:00">2021-01-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>AsyncTask 是一个简单实用的多线程异步任务工具类。</p>
 <p>Android 开发中经常遇到需要将耗时的操作放到子线程中进行异步执行，等执行完毕之后再通知主线程更新 UI 的情况，例如异步加载网络图片、异步读取文件等，如果在主线程中执行这些耗时操作，就会造成卡顿的情况，甚至是 ANR。开启一个线程处理耗时任务很简单，创建一个 Thread 对象，在 run() 方法中去执行耗时操作即可，但是当耗时任务执行完毕要通知主线程更新 UI 的时候就比较麻烦了，我们需要创建一个主线程的 Handler，然后通过它向主线程发送更新 UI 的消息进行 UI 更新，这一整个过程十分麻烦。</p>
 <p>基于上诉问题， AsyncTask 就出现了，按照官方的说法，AsyncTask 是为了解决主线程和子线程之间的交互问题，它能够在后台线程中执行耗时操作，并在把执行结果发送到主线程，而这一系列的操作都不需要你创建任何的 Thread 或 Handler 对象。AsyncTask 适合处理耗时不是很长的任务（几秒钟），所以你不应该拿它来处理耗时很长的任务，至于为什么，我们会在后面解释原因。</p>
 <h1 id="1-用法"><a href="#1-用法" class="headerlink" title="1 用法"></a>1 用法</h1><p>假设我们有一个加载本地文件的任务，需要从网络上加载 3 个文件，并且在加载每个文件的时候通知用户当前正在加载什么文件，整个过程大概需要 10 秒钟，这很明显是一个十分耗时的任务，我们就用 AsyncTask 进行一步加载。</p>
@@ -17,7 +233,7 @@
 </li>
 </ul>
 <p>所以接下来我们要做的第一步就是继承 AsyncTask 并指定参数类型：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFileTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFileTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在上面的代码里，我们指定执行参数类型为 String 类型，因为我们在加载文件的时候需要指定三个 URL 作为参数；进度值类型为 String 类型，因为每加载一个文件的时候都要通知用户当前加载的文件名；结果类型为 Boolean，当三个任务都加载成功的时候我们返回 true 代表文件加载成功。</p>
 <p>指定完参数类型之后，我们还要实现几个方法，并且在这些方法里面写入我们的异步操作逻辑：</p>
@@ -39,7 +255,7 @@
 </li>
 </ul>
 <p>接下来，我们就要实现上述几个方法，在开始加载文件之前以 Toast 形式提示用户“开始加载文件”，在加载某一个文件的时候提示用户“正在加载文件：xxx”，在加载完所有文件的时候根据加载文件的结果提示用户文件是否都加载成功：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFilesTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoadFileTask</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务开始前提示用户。</span></span><br><span class="line">        Toast.makeText(mContext, <span class="string">&quot;开始加载文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">doInBackground</span><span class="params">(String... params)</span> </span>&#123;</span><br><span class="line">        String file1 = params[<span class="number">0</span>];</span><br><span class="line">        String file2 = params[<span class="number">1</span>];</span><br><span class="line">        String file3 = params[<span class="number">2</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = <span class="keyword">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 加载第一个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File1&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file1);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 加载第二个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File2&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file2);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 加载第三个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File3&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file3);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 返回文件加载结果。</span></span><br><span class="line">        <span class="keyword">return</span> isSuccess;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(String... values)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 提示用户当前在加载的是哪个文件。</span></span><br><span class="line">        String fileName = values[<span class="number">0</span>];</span><br><span class="line">        String message = <span class="string">&quot;正在加载文件：&quot;</span> + fileName;</span><br><span class="line">        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Boolean result)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务结束的时候根据不同的加载结果提示用户。</span></span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = result;</span><br><span class="line">        <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;成功加载所有文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;加载文件失败&quot;</span>, Toast.LENGTH_SHORT).show();      </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 加载文件的异步任务。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadFilesTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">String</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoadFileTask</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务开始前提示用户。</span></span><br><span class="line">        Toast.makeText(mContext, <span class="string">&quot;开始加载文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">doInBackground</span><span class="params">(String... params)</span> </span>&#123;</span><br><span class="line">        String file1 = params[<span class="number">0</span>];</span><br><span class="line">        String file2 = params[<span class="number">1</span>];</span><br><span class="line">        String file3 = params[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第一个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File1&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第二个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File2&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载第三个文件，并且通知用户当前加载的文件名称。</span></span><br><span class="line">        publishProgress(<span class="string">&quot;File3&quot;</span>);</span><br><span class="line">        isSuccess = isSuccess &amp;&amp; loadFile(file3);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回文件加载结果。</span></span><br><span class="line">        <span class="keyword">return</span> isSuccess;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(String... values)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 提示用户当前在加载的是哪个文件。</span></span><br><span class="line">        String fileName = values[<span class="number">0</span>];</span><br><span class="line">        String message = <span class="string">&quot;正在加载文件：&quot;</span> + fileName;</span><br><span class="line">        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Boolean result)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 在异步任务结束的时候根据不同的加载结果提示用户。</span></span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = result;</span><br><span class="line">        <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;成功加载所有文件&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Toast.makeText(mContext, <span class="string">&quot;加载文件失败&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-2-执行异步任务"><a href="#1-2-执行异步任务" class="headerlink" title="1.2 执行异步任务"></a>1.2 执行异步任务</h2><p>继承 AsyncTask 创建异步加载文件的任务之后，接下来要做的就是执行这个异步任务了，AsyncTask 提供了两个执行异步任务的方法：</p>
 <ul>
@@ -62,7 +278,7 @@
 <li><p><strong>Android 1.5</strong></p>
 <p>AsyncTask 作为一个异步任务工具类首次被引入 SDK，此时的 AsyncTask 只能按照串行的方式，一个接一个的执行每一个异步任务，也就是说无论你通过 AsyncTask 创建多少个异步任务，它们都会被加入队列中按顺序依次执行，如果某一个异步任务耗时很久，就会导致后面的任务一直无法被执行。</p>
 </li>
-<li><p><strong>Android 1.6 至 3.0（不包括3.0）</strong></p>
+<li><p><strong>Android 1.6 至 3.0（不包括 3.0）</strong></p>
 <p>AsyncTask 开始支持多线程并发的情况，其内部有一个全局共享的线程池，该线程池的最小线程数为 5，最大线程数为 128。也就是说现在你可以创建多个 AsyncTask 实例，并且让它们同时被执行了。</p>
 </li>
 <li><p><strong>Android 3.0 及以上</strong></p>
@@ -92,7 +308,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> WorkerRunnable&lt;Params, Result&gt; mWorker;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> FutureTask&lt;Result&gt; mFuture;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerRunnable</span>&lt;<span class="title">Params</span>, <span class="title">Result</span>&gt; <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Result</span>&gt; </span>&#123;</span><br><span class="line">    Params[] mParams;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>很简单，mWorker 实际上就是 WorkerRunnable， 它实现了 Callable 接口，并且定义了和 AsyncTask 对应的 Params 和 Result 泛型，其内部还存储了用于执行异步任务的参数，而 mFuture 就是 FutureTask 了，用于监听异步任务执行结果，这两个成员变量应该说是 AsyncTask 的核心了，我们继续看下一段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mWorker = <span class="keyword">new</span> WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Result <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            mTaskInvoked.set(<span class="keyword">true</span>);</span><br><span class="line">			</span><br><span class="line">          	<span class="comment">// 此处有坑，此处有坑，此处真的有坑，重要的事说三遍！</span></span><br><span class="line">            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            Result result = doInBackground(mParams);</span><br><span class="line">            Binder.flushPendingCommands();</span><br><span class="line">            <span class="keyword">return</span> postResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = <span class="keyword">new</span> FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;An error occurred while executing doInBackground()&quot;</span>,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mWorker = <span class="keyword">new</span> WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Result <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            mTaskInvoked.set(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">          	<span class="comment">// 此处有坑，此处有坑，此处真的有坑，重要的事说三遍！</span></span><br><span class="line">            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            Result result = doInBackground(mParams);</span><br><span class="line">            Binder.flushPendingCommands();</span><br><span class="line">            <span class="keyword">return</span> postResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = <span class="keyword">new</span> FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;An error occurred while executing doInBackground()&quot;</span>,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>很明显 mWorker 负责在其他线程中执行异步逻辑，也就是 doInBackground(Params…) 方法，并且在异步逻辑完成之后调用 postResult(Result) 方法执行 onPostExecute(Result)，mFuture 在 done() 回调方法中处理一些特殊的情况，例如异步任务还没有被执行就被取消。有一个地方需要特别注意的是执行异步逻辑的时候，调用了 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND) 方法设置当前的线程优先级为后台级别，这是一个深坑，在某些低端的单核手机上会出现主线程由于优先级较高而一直占用 CPU 资源导致 AsyncTask 的异步任务一直无法被执行的情况。</p>
 <p>最后，我们看看 AsyncTask 是如何处理 onPostExecute(Reuslt) 和 onProgressUpdate(Progress…) 的，源码如下：</p>
@@ -101,9 +317,195 @@
 <p>其实原理很简单就是利用 Handler 将数据发送到主线程执行。</p>
 <h1 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4 注意事项"></a>4 注意事项</h1><p>最后我们总结下使用 AsyncTask 需要注意的事项：</p>
 <ul>
-<li>Android 1.6 至 3.0（不包括 3.0）的AsyncTask 是支持并行执行异步任务的，其他版本都是按顺序依次执行异步任务。</li>
+<li>Android 1.6 至 3.0（不包括 3.0）的 AsyncTask 是支持并行执行异步任务的，其他版本都是按顺序依次执行异步任务。</li>
 <li>如果你希望并行执行异步任务，建议你创建自己的线程池，通过 executeOnExecutor(Executor, Params…) 方法执行异步任务，尽量不用使用 AsyncTask 提供的默认线程池。</li>
 <li>AsyncTask 的异步线程优先级是 Process.THREAD_PRIORITY_BACKGROUND，在某些低端的单核手机上会出现主线程由于优先级较高而一直占用 CPU 资源导致 AsyncTask 的异步任务一直无法被执行的情况。</li>
 </ul>
 <p>AsyncTask 虽然好用，但是请以正确的姿势使用，避免出现预想不到的问题。</p>
-</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://darylgo.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/camera2-tutorial-chapter1/">Android Camera2 教程 · 第一章 · 概览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/09/camera1-tutorial-chapter2/">Android Camera1 教程 · 第二章 · 预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/camera1-tutorial-chapter1/">Android Camera1 教程 · 第一章 · 开启相机</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/10/why-kotlin/">为什么使用 Kotlin</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/16/write-readable-code/">如何提高代码的可读性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/android-async-task/">深入理解 AsyncTask</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">学海无涯.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="复制成功!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/16/write-readable-code/" rel="next" title="如何提高代码的可读性">
+      如何提高代码的可读性 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%94%A8%E6%B3%95"><span class="nav-text">1 用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%BB%A7%E6%89%BF-AsyncTask"><span class="nav-text">1.1 继承 AsyncTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%89%A7%E8%A1%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-text">1.2 执行异步任务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%89%88%E6%9C%AC%E5%8F%98%E5%8C%96"><span class="nav-text">2 版本变化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text">3 源码分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">4 注意事项</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daryl</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daryl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
